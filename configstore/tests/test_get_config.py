@@ -7,11 +7,13 @@ import configstore
 class TestConfigStore(TestCase):
 
     def test_returns_default(self):
-        configstore.enabled_backends = []
-        val = configstore.get_config(DEFAULT_KEY, DEFAULT_VALUE)
+        backends = []
+        store = configstore.Store(backends)
+        val = store.get_config(DEFAULT_KEY, DEFAULT_VALUE)
         self.assertEqual(DEFAULT_VALUE, val)
 
     def test_raises(self):
-        configstore.enable_backends = []
+        backends = []
+        store = configstore.Store(backends)
         with self.assertRaises(configstore.exceptions.ConfigNotFoundException):
-            configstore.get_config(DEFAULT_KEY)
+            store.get_config(DEFAULT_KEY)
