@@ -1,6 +1,5 @@
 import os
 
-from configstore.exceptions import ConfigNotFoundException
 SECRETS_PATH = '/run/secrets'
 
 
