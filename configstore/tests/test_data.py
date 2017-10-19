@@ -1,0 +1,3 @@
+DEFAULT_KEY = 'FAKE_KEY'
+DEFAULT_VALUE = 'FAKE_VALUE'
+CUSTOM_PATH = '/some/fake/path'

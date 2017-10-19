@@ -1,9 +1,7 @@
 from unittest import TestCase
+from .test_data import DEFAULT_KEY, DEFAULT_VALUE
 
 import configstore
-
-DEFAULT_KEY = 'FAKE_KEY'
-DEFAULT_VALUE = 'FAKE_VALUE'
 
 
 class TestConfigStore(TestCase):
