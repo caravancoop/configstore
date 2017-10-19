@@ -11,6 +11,18 @@ class DictBackend:
         return self._settings[key]
 
 
+def test_store_init():
+    Store([])
+    Store([DictBackend()])
+    # This error is not caught at the moment
+    Store([DictBackend])
+
+    with pytest.raises(Exception):
+        Store()
+    with pytest.raises(Exception):
+        Store(None)
+
+
 def test_store_success():
     store = Store([DictBackend(key='secrets!')])
 
