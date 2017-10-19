@@ -9,10 +9,10 @@ enabled_backends = [
 no_default = object()
 
 
-def get_secret(secret, default=no_default):
+def get_config(key, default=no_default):
     for backend in enabled_backends:
         try:
-            return backend.get_secret(secret)
+            return backend.get_config(key)
         except Exception:
             # Consider any exception as a non-existing secret in this backend
             continue
@@ -21,5 +21,5 @@ def get_secret(secret, default=no_default):
         return default
     else:
         raise ConfigNotFoundException(
-            "Couldn't find config {} in any backend".format(secret)
+            "Couldn't find config {} in any backend".format(key)
         )

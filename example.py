@@ -5,4 +5,4 @@ configstore.enabled_backends = [
     configstore.EnvVarBackend()
 ]
 
-SECRET_KEY = configstore.get_secret('APP_SECRET_KEY')
+SECRET_KEY = configstore.get_config('APP_SECRET_KEY')
