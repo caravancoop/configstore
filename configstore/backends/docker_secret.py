@@ -11,8 +11,8 @@ class DockerSecretBackend(object):
     def get_config(self, key):
         path = os.path.join(self.secrets_path, key)
 
-        if not os.path.exists(path):
+        try:
+            with open(path) as fd:
+                return fd.readline().strip()
+        except FileNotFoundError:
             return None
-
-        with open(path) as fd:
-            return fd.readline().strip()
