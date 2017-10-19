@@ -10,9 +10,6 @@ class DockerSecretBackend(object):
         self.secrets_path = secrets_path
 
     def get_secret(self, secret):
-        path = os.path.join(self.secrets_path, secret)
-        if not os.path.exists(path):
-            raise ConfigNotFoundException
 
-        with open(path) as fd:
+        with open(os.path.join(self.secrets_path, secret)) as fd:
             return fd.readline().strip()
