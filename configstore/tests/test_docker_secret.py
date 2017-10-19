@@ -10,9 +10,7 @@ from .test_data import DEFAULT_KEY, DEFAULT_VALUE, CUSTOM_PATH
 
 class TestDockerSecretBackend(TestCase):
 
-    @mock.patch('configstore.backends.docker_secret.os.path.exists',
-                return_value=True)
-    def test_get_secret(self, mocked_exists):
+    def test_get_secret(self):
         mocked_open = mock.mock_open(read_data=DEFAULT_VALUE)
         with mock.patch('configstore.backends.docker_secret.open',
                         mocked_open,
@@ -21,12 +19,12 @@ class TestDockerSecretBackend(TestCase):
             val = d.get_config(DEFAULT_KEY)
             self.assertEqual(DEFAULT_VALUE, val)
 
-    @mock.patch('configstore.backends.docker_secret.os.path.exists',
-                return_value=False)
-    def test_secrets_path(self, mocked_exists):
-        mocked_open = mock.MagicMock()
+    def test_secrets_path(self):
+        def open_raises(filename):
+            raise FileNotFoundError
+
         with mock.patch('configstore.backends.docker_secret.open',
-                        mocked_open,
+                        side_effect=open_raises,
                         create=True):
             d = DockerSecretBackend(CUSTOM_PATH)
             val = d.get_config(DEFAULT_KEY)
