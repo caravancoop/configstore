@@ -1,4 +1,3 @@
-import os
 from unittest import TestCase
 try:
     from unittest import mock
@@ -11,7 +10,9 @@ from .test_data import DEFAULT_KEY, DEFAULT_VALUE, CUSTOM_PATH
 
 class TestDockerSecretBackend(TestCase):
 
-    def test_get_secret(self):
+    @mock.patch('configstore.backends.docker_secret.os.path.exists',
+                return_value=True)
+    def test_get_secret(self, mocked_exists):
         mocked_open = mock.mock_open(read_data=DEFAULT_VALUE)
         with mock.patch('configstore.backends.docker_secret.open',
                         mocked_open,
@@ -26,7 +27,5 @@ class TestDockerSecretBackend(TestCase):
                         mocked_open,
                         create=True):
             d = DockerSecretBackend(CUSTOM_PATH)
-            d.get_config(DEFAULT_KEY)
-            mocked_open.assert_called_once_with(
-                os.path.join(CUSTOM_PATH, DEFAULT_KEY)
-            )
+            val = d.get_config(DEFAULT_KEY)
+            self.assertIsNone(val)
