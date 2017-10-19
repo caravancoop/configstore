@@ -1,20 +1,16 @@
-from configstore import DockerSecretBackend, EnvVarBackend
-from configstore.exceptions import ConfigNotFoundException
+class ConfigNotFoundException(Exception):
+    pass
 
-DEFAULT_BACKENDS = [
-    DockerSecretBackend(),
-    EnvVarBackend()
-]
 
-NO_DEFAULT = object()
+_no_default = object()
 
 
 class Store(object):
 
-    def __init__(self, backends=DEFAULT_BACKENDS):
-        self.backends = backends
+    def __init__(self, backends):
+        self.backends = list(backends)
 
-    def get_config(self, key, default=NO_DEFAULT):
+    def get_config(self, key, default=_no_default):
         for backend in self.backends:
             try:
                 return backend.get_config(key)
@@ -23,9 +19,8 @@ class Store(object):
                 # this backend
                 continue
 
-        if default != NO_DEFAULT:
+        if default is not _no_default:
             return default
         else:
             raise ConfigNotFoundException(
-                "Couldn't find config {} in any backend".format(key)
-            )
+                "Couldn't find config {} in any backend".format(key))
