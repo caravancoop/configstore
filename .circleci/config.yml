@@ -1,0 +1,32 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: python:3.5
+    working_directory: /home/ubuntu/configstore
+    steps:
+      - checkout
+      - restore_cache:
+          key: configstore-v1
+      - run:
+          name: Install CI tools
+          command: |
+            python3 -m venv venv
+            venv/bin/pip install tox
+      - run:
+          name: Test with Python 2.7
+          command: venv/bin/tox -e py27
+      - run:
+          name: Test with Python 3.5
+          command: venv/bin/tox -e py35
+      - run:
+          name: Test with Python 3.6
+          command: venv/bin/tox -e py36
+      - run:
+          name: Check packaging
+          command: venv/bin/tox -e p7g
+      - save_cache:
+          key: configstore-v1
+          paths:
+            - venv
+            - .tox
