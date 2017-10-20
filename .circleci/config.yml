@@ -13,7 +13,7 @@ jobs:
           command: |
             apt-get update -qq
             apt-get install -q -y --no-install-recommends \
-                python3.6 python3.6-venv python3.5 python2.7
+                python3.6 python3.6-venv python3.5 python2.7 git
       - run:
           name: Install CI tools
           command: |
@@ -33,7 +33,7 @@ jobs:
           command: venv/bin/tox -e coverage
       - run:
           name: Check packaging
-          command: venv/bin/tox -e p7g
+          command: venv/bin/tox -e pkg
       - save_cache:
           key: configstore-v2
           paths:

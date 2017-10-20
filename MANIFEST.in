@@ -1,0 +1,4 @@
+include LICENSE README.md tox.ini example.py
+
+# ship tests in sdist, but not in wheels
+recursive-include configstore/tests *.py
