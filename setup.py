@@ -18,5 +18,8 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    zip_safe=False,
+    extras_require={
+        # This does not depend on django in any way
+        'dotenv': ['django-dotenv'],
+    },
 )
