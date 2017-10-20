@@ -14,5 +14,5 @@ class DockerSecretBackend(object):
         try:
             with open(path) as fd:
                 return fd.readline().strip()
-        except FileNotFoundError:
+        except OSError:
             return None

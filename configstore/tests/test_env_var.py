@@ -1,17 +1,19 @@
-from unittest import TestCase
-try:
-    from unittest import mock
-except ImportError:
-    import mock
-from configstore.backends.env_var import EnvVarBackend
-from .test_data import DEFAULT_KEY, DEFAULT_VALUE
+from ..backends.env_var import EnvVarBackend
 
 
-class TestEnvVarBackend(TestCase):
+def test_env_var_success(monkeypatch):
+    monkeypatch.setenv('APP_ENVIRONMENT', 'STAGING')
 
-    @mock.patch('configstore.backends.env_var.os.environ',
-                {DEFAULT_KEY: DEFAULT_VALUE})
-    def test_env_var(self):
-        b = EnvVarBackend()
-        val = b.get_config(DEFAULT_KEY)
-        self.assertEqual(DEFAULT_VALUE, val)
+    b = EnvVarBackend()
+    value = b.get_config('APP_ENVIRONMENT')
+
+    assert value == 'STAGING'
+
+
+def test_env_var_missing(monkeypatch):
+    monkeypatch.delenv('APP_DEBUG', raising=False)
+
+    b = EnvVarBackend()
+    value = b.get_config('APP_DEBUG')
+
+    assert value is None

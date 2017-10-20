@@ -1,9 +1,10 @@
 *.pyc
 __pycache__
-# Setuptools distribution folder.
-/dist/
 
-# Python egg metadata, regenerated from source files by setuptools.
-/*.egg-info
-/*.egg
+# Test artifacts
+.cache/
+.tox/
 
+# Packaging litter
+*.egg-info
+dist/
