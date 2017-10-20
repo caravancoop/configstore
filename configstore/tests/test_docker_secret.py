@@ -3,6 +3,7 @@ import sys
 import errno
 
 import pretend
+import pytest
 
 from ..backends.docker_secret import DockerSecretBackend
 
@@ -26,7 +27,8 @@ def test_docker_secret_success(monkeypatch):
 
 
 def test_docker_secret_missing(monkeypatch):
-    fake_open = pretend.call_recorder(pretend.raiser(OSError(errno.ENOENT)))
+    exc = OSError(errno.ENOENT, 'no file')
+    fake_open = pretend.call_recorder(pretend.raiser(exc))
     monkeypatch.setattr(builtins_open, fake_open)
 
     b = DockerSecretBackend()
@@ -34,6 +36,16 @@ def test_docker_secret_missing(monkeypatch):
 
     assert value is None
     assert fake_open.calls == [pretend.call('/run/secrets/APP_SECRET_KEY')]
+
+
+def test_docker_secret_bad_config(monkeypatch):
+    exc = OSError(errno.EISDIR, 'is a dir')
+    fake_open = pretend.call_recorder(pretend.raiser(exc))
+    monkeypatch.setattr(builtins_open, fake_open)
+
+    b = DockerSecretBackend()
+    with pytest.raises(OSError):
+        b.get_config('APP_SECRET_KEY')
 
 
 def test_docker_secret_custom_path_success(monkeypatch):
