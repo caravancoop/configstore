@@ -14,7 +14,7 @@ class DockerSecretBackend(object):
 
         try:
             file = open(path)
-        except OSError as exc:
+        except IOError as exc:
             if exc.errno == errno.ENOENT:
                 return None
             else:

@@ -27,15 +27,10 @@ def test_docker_secret_success(monkeypatch):
 
 
 def test_docker_secret_missing(monkeypatch):
-    exc = OSError(errno.ENOENT, 'no file')
-    fake_open = pretend.call_recorder(pretend.raiser(exc))
-    monkeypatch.setattr(builtins_open, fake_open)
-
-    b = DockerSecretBackend()
+    b = DockerSecretBackend('/does/not/exist/at/all')
     value = b.get_config('APP_SECRET_KEY')
 
     assert value is None
-    assert fake_open.calls == [pretend.call('/run/secrets/APP_SECRET_KEY')]
 
 
 def test_docker_secret_bad_config(monkeypatch):
