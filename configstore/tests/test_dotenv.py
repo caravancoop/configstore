@@ -42,7 +42,7 @@ def test_dotenv_success(monkeypatch):
 
 def test_dotenv_missing(monkeypatch):
     content = u'APP_SECRET_KEY=1234abcd'
-    fake_open = pretend.call_recorder(lambda path: io.StringIO(content))
+    fake_open = lambda path: io.StringIO(content)
     monkeypatch.setattr(builtins_open, fake_open)
 
     b = DotenvBackend('/some/path')
