@@ -12,3 +12,20 @@ This will first try to find this in your first backend (let's say docker secrets
 
 
 See ```example.py``` for some example code.
+
+
+Available backends:
+
+configstore.EnvVarBackend finds settings in environment variables.  This is the classic
+12-factor approach, which main drawback is that it's easy for outside tools or sub-processes
+to inspect the environment and access sensitive data.  This backend is still useful for
+settings that are not secrets.
+
+configstore.DockerSecretBackend can read [Docker secrets](https://docs.docker.com/engine/swarm/secrets/).
+This is a secure storage with first-class support in the Docker runtime and related
+tooling.
+
+configstore.DotenvBackend lets you put settings in a key-value format file, using the
+[dotenv module](https://github.com/jpadilla/django-dotenv), which is useful for local development.
+This backend requires an optional dependency, so use a requirement like ```configstore[dotenv]```
+to get everything installed.
