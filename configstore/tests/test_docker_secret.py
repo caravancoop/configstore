@@ -1,31 +1,54 @@
-from unittest import TestCase
-try:
-    from unittest import mock
-except ImportError:
-    import mock
+import io
+import sys
+import errno
 
-from configstore.backends.docker_secret import DockerSecretBackend
-from .test_data import DEFAULT_KEY, DEFAULT_VALUE, CUSTOM_PATH
+import pretend
+import pytest
+
+from ..backends.docker_secret import DockerSecretBackend
 
 
-class TestDockerSecretBackend(TestCase):
+if sys.version_info[0] == 3:
+    builtins_open = 'builtins.open'
+else:  # pragma: no cover
+    builtins_open = '__builtin__.open'
 
-    def test_get_secret(self):
-        mocked_open = mock.mock_open(read_data=DEFAULT_VALUE)
-        with mock.patch('configstore.backends.docker_secret.open',
-                        mocked_open,
-                        create=True):
-            d = DockerSecretBackend()
-            val = d.get_config(DEFAULT_KEY)
-            self.assertEqual(DEFAULT_VALUE, val)
 
-    def test_secrets_path(self):
-        def open_raises(filename):
-            raise FileNotFoundError
+def test_docker_secret_success(monkeypatch):
+    fake_open = pretend.call_recorder(lambda path: io.StringIO(u'sup3r s3cr3t'))
+    # StringIO implements __enter__, so our one-liner works for "with open(path)"
+    monkeypatch.setattr(builtins_open, fake_open)
 
-        with mock.patch('configstore.backends.docker_secret.open',
-                        side_effect=open_raises,
-                        create=True):
-            d = DockerSecretBackend(CUSTOM_PATH)
-            val = d.get_config(DEFAULT_KEY)
-            self.assertIsNone(val)
+    b = DockerSecretBackend()
+    value = b.get_config('APP_SECRET_KEY')
+
+    assert value == 'sup3r s3cr3t'
+    assert fake_open.calls == [pretend.call('/run/secrets/APP_SECRET_KEY')]
+
+
+def test_docker_secret_missing(monkeypatch):
+    b = DockerSecretBackend('/does/not/exist/at/all')
+    value = b.get_config('APP_SECRET_KEY')
+
+    assert value is None
+
+
+def test_docker_secret_bad_config(monkeypatch):
+    exc = OSError(errno.EISDIR, 'is a dir')
+    fake_open = pretend.call_recorder(pretend.raiser(exc))
+    monkeypatch.setattr(builtins_open, fake_open)
+
+    b = DockerSecretBackend()
+    with pytest.raises(OSError):
+        b.get_config('APP_SECRET_KEY')
+
+
+def test_docker_secret_custom_path_success(monkeypatch):
+    fake_open = pretend.call_recorder(lambda path: io.StringIO(u'wow s3cr3t'))
+    monkeypatch.setattr(builtins_open, fake_open)
+
+    b = DockerSecretBackend('/custom/path')
+    value = b.get_config('APP_SECRET_KEY')
+
+    assert value == 'wow s3cr3t'
+    assert fake_open.calls == [pretend.call('/custom/path/APP_SECRET_KEY')]

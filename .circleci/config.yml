@@ -1,0 +1,43 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: debian:testing
+    working_directory: /home/ubuntu/configstore
+    steps:
+      - checkout
+      - restore_cache:
+          key: configstore-v2
+      - run:
+          name: Install system packages
+          command: |
+            apt-get update -qq
+            apt-get install -q -y --no-install-recommends \
+                python3.6 python3.6-venv python3.5 python2.7 git
+      - run:
+          name: Install CI tools
+          command: |
+            python3.6 -m venv venv
+            venv/bin/pip install tox
+      - run:
+          name: Test with Python 3.6
+          command: venv/bin/tox -e py36 -- --junitxml=reports/coverage.xml
+      - run:
+          name: Test with Python 3.5
+          command: venv/bin/tox -e py35
+      - run:
+          name: Test with Python 2.7
+          command: venv/bin/tox -e py27
+      - run:
+          name: Run tests with coverage
+          command: venv/bin/tox -e coverage
+      - run:
+          name: Check packaging
+          command: venv/bin/tox -e pkg
+      - save_cache:
+          key: configstore-v2
+          paths:
+            - venv
+            - .tox
+      - store_test_results:
+          path: reports

@@ -1,4 +1,5 @@
 import os
+import errno
 
 SECRETS_PATH = '/run/secrets'
 
@@ -12,7 +13,12 @@ class DockerSecretBackend(object):
         path = os.path.join(self.secrets_path, key)
 
         try:
-            with open(path) as fd:
-                return fd.readline().strip()
-        except FileNotFoundError:
-            return None
+            file = open(path)
+        except IOError as exc:
+            if exc.errno == errno.ENOENT:
+                return None
+            else:
+                raise
+
+        with file:
+            return file.readline().strip()
