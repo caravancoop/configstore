@@ -1,5 +1,3 @@
-import pytest
-
 from ..backends.env_var import EnvVarBackend
 
 
@@ -16,5 +14,6 @@ def test_env_var_missing(monkeypatch):
     monkeypatch.delenv('APP_DEBUG', raising=False)
 
     b = EnvVarBackend()
-    with pytest.raises(Exception):
-        b.get_config('APP_DEBUG')
+    value = b.get_config('APP_DEBUG')
+
+    assert value is None
