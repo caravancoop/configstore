@@ -1,4 +1,4 @@
-class ConfigNotFoundException(Exception):
+class SettingNotFoundException(Exception):
     pass
 
 
@@ -10,9 +10,9 @@ class Store(object):
     def __init__(self, backends):
         self.backends = list(backends)
 
-    def get_config(self, key, default=_no_default):
+    def get_setting(self, key, default=_no_default):
         for backend in self.backends:
-            ret = backend.get_config(key)
+            ret = backend.get_setting(key)
             if ret is None:
                 continue
 
@@ -21,5 +21,5 @@ class Store(object):
         if default is not _no_default:
             return default
         else:
-            raise ConfigNotFoundException(
-                "Couldn't find config {} in any backend".format(key))
+            raise SettingNotFoundException(
+                "Couldn't find setting {} in any backend".format(key))

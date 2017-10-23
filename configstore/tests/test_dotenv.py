@@ -34,7 +34,7 @@ def test_dotenv_success(monkeypatch):
     monkeypatch.setattr(builtins_open, fake_open)
 
     b = DotenvBackend('/some/path')
-    value = b.get_config('APP_SECRET_KEY')
+    value = b.get_setting('APP_SECRET_KEY')
 
     assert value == '1234abcd'
     assert fake_open.calls == [pretend.call('/some/path')]
@@ -46,6 +46,6 @@ def test_dotenv_missing(monkeypatch):
     monkeypatch.setattr(builtins_open, fake_open)
 
     b = DotenvBackend('/some/path')
-    value = b.get_config('APP_DEBUG')
+    value = b.get_setting('APP_DEBUG')
 
     assert value is None
