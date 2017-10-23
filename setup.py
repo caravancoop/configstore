@@ -1,9 +1,15 @@
 from setuptools import setup
 
+long_description = '''
+configstore is a small pluggable library that lets you retrieve settings
+or secrets from a variety of storage systems to configure your app.
+'''
+
 setup(
     name='configstore',
-    version='0.3',
+    version='0.1',
     description='Retrieve config from different backends',
+    long_description=long_description,
     url='https://github.com/caravancoop/configstore',
     author='Antoine Reversat',
     author_email='antoine@caravan.coop',
