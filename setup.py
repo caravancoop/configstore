@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='configstore',
-    version='0.2',
+    version='0.1',
     description='Retrieve config from different backends',
     url='https://github.com/caravancoop/configstore',
     author='Antoine Reversat',
