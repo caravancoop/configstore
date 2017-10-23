@@ -6,5 +6,6 @@ __pycache__
 .tox/
 
 # Packaging litter
-*.egg-info
+configstore.egg-info
+build/
 dist/
