@@ -3,5 +3,5 @@ import os
 
 class EnvVarBackend(object):
 
-    def get_config(self, config):
+    def get_setting(self, config):
         return os.environ.get(config)

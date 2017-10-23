@@ -20,7 +20,7 @@ def test_docker_secret_success(monkeypatch):
     monkeypatch.setattr(builtins_open, fake_open)
 
     b = DockerSecretBackend()
-    value = b.get_config('APP_SECRET_KEY')
+    value = b.get_setting('APP_SECRET_KEY')
 
     assert value == 'sup3r s3cr3t'
     assert fake_open.calls == [pretend.call('/run/secrets/APP_SECRET_KEY')]
@@ -28,7 +28,7 @@ def test_docker_secret_success(monkeypatch):
 
 def test_docker_secret_missing(monkeypatch):
     b = DockerSecretBackend('/does/not/exist/at/all')
-    value = b.get_config('APP_SECRET_KEY')
+    value = b.get_setting('APP_SECRET_KEY')
 
     assert value is None
 
@@ -40,7 +40,7 @@ def test_docker_secret_bad_config(monkeypatch):
 
     b = DockerSecretBackend()
     with pytest.raises(OSError):
-        b.get_config('APP_SECRET_KEY')
+        b.get_setting('APP_SECRET_KEY')
 
 
 def test_docker_secret_custom_path_success(monkeypatch):
@@ -48,7 +48,7 @@ def test_docker_secret_custom_path_success(monkeypatch):
     monkeypatch.setattr(builtins_open, fake_open)
 
     b = DockerSecretBackend('/custom/path')
-    value = b.get_config('APP_SECRET_KEY')
+    value = b.get_setting('APP_SECRET_KEY')
 
     assert value == 'wow s3cr3t'
     assert fake_open.calls == [pretend.call('/custom/path/APP_SECRET_KEY')]

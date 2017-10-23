@@ -18,5 +18,5 @@ class DotenvBackend(object):
 
         self.config = dotenv.parse_dotenv(content)
 
-    def get_config(self, key):
+    def get_setting(self, key):
         return self.config.get(key)

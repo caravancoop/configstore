@@ -1,7 +1,7 @@
-from .backends import DockerSecretBackend, EnvVarBackend
-from .store import Store, ConfigNotFoundException
+from .backends import DockerSecretBackend, DotenvBackend, EnvVarBackend
+from .store import Store, SettingNotFoundException
 
 __all__ = [
-    'Store', 'ConfigNotFoundException',
-    'EnvVarBackend', 'DockerSecretBackend',
+    'Store', 'SettingNotFoundException',
+    'EnvVarBackend', 'DotenvBackend', 'DockerSecretBackend',
 ]

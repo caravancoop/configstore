@@ -9,7 +9,7 @@ class DockerSecretBackend(object):
     def __init__(self, secrets_path=SECRETS_PATH):
         self.secrets_path = secrets_path
 
-    def get_config(self, key):
+    def get_setting(self, key):
         path = os.path.join(self.secrets_path, key)
 
         try:
