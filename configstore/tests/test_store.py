@@ -8,7 +8,7 @@ class DictBackend:
         self._settings = settings
 
     def get_config(self, key):
-        return self._settings[key]
+        return self._settings.get(key)
 
 
 def test_store_init():

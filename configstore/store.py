@@ -12,12 +12,11 @@ class Store(object):
 
     def get_config(self, key, default=_no_default):
         for backend in self.backends:
-            try:
-                return backend.get_config(key)
-            except Exception:
-                # Consider any exception as a non-existing secret in
-                # this backend
+            ret = backend.get_config(key)
+            if ret is None:
                 continue
+
+            return ret
 
         if default is not _no_default:
             return default
