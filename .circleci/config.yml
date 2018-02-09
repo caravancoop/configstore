@@ -7,6 +7,7 @@ workflows:
       - test-py36
       - test-py35
       - test-py27
+      - check
 
 jobs:
 
@@ -29,9 +30,6 @@ jobs:
       - run:
           name: Run tests with coverage
           command: venv/bin/tox -e coverage
-      - run:
-          name: Check packaging
-          command: venv/bin/tox -e pkg
       - save_cache:
           key: configstore-py36-v1
           paths:
@@ -82,6 +80,30 @@ jobs:
           command: venv/bin/tox -e py27 -- --junitxml=reports/tox/coverage.xml
       - save_cache:
           key: configstore-py35-v1
+          paths:
+            - venv
+            - .tox
+      - store_test_results:
+          path: reports
+
+  check:
+    docker:
+      - image: circleci/python:3.6
+    working_directory: ~/configstore
+    steps:
+      - checkout
+      - restore_cache:
+          key: configstore-check-v1
+      - run:
+          name: Install CI tools
+          command: |
+            python3.6 -m venv venv
+            venv/bin/pip install tox
+      - run:
+          name: Check packaging and dependencies
+          command: venv/bin/tox -e pkg
+      - save_cache:
+          key: configstore-check-v1
           paths:
             - venv
             - .tox
