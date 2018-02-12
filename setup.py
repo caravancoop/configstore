@@ -8,14 +8,11 @@ or secrets from a variety of storage systems to configure your app.
 setup(
     name='configstore',
     version='0.2',
-    description='Retrieve config from different backends',
+    description='Retrieve settings and secrets from different stores',
     long_description=long_description,
     url='https://github.com/caravancoop/configstore',
-    author='Antoine Reversat',
-    author_email='antoine@caravan.coop',
-    packages=[
-        'configstore', 'configstore.backends',
-    ],
+    author='Caravan Coop',
+    author_email='hi@caravan.coop',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
@@ -23,6 +20,10 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+    ],
+    packages=[
+        'configstore', 'configstore.backends',
     ],
     extras_require={
         # This does not depend on django in any way
