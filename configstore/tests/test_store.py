@@ -23,7 +23,7 @@ def test_store_init():
         Store(None)
 
 
-def test_store_success():
+def test_store_get_setting():
     store = Store([DictBackend(key='secrets!')])
 
     value = store.get_setting('key')
@@ -31,7 +31,7 @@ def test_store_success():
     assert value == 'secrets!'
 
 
-def test_store_success_with_default():
+def test_store_get_setting_with_default():
     store = Store([DictBackend(key='secrets!')])
 
     value = store.get_setting('key', 'default')
@@ -39,16 +39,24 @@ def test_store_success_with_default():
     assert value == 'secrets!'
 
 
-def test_store_missing():
+def test_store_get_setting_missing():
     store = Store([])
 
     with pytest.raises(SettingNotFoundException):
         store.get_setting('key')
 
 
-def test_store_missing_with_default():
+def test_store_get_setting_missing_with_default():
     store = Store([DictBackend()])
 
     value = store.get_setting('key', 'default value')
 
     assert value == 'default value'
+
+
+def test_store_add_backend():
+    store = Store([])
+
+    store.add_backend(DictBackend(environment='staging'))
+
+    assert store.get_setting('environment') == 'staging'
