@@ -1,7 +1,8 @@
 try:
     import boto3
-except ImportError:  # pragma: no cover
+except ImportError:
     boto3 = None
+
 
 class AwsSsmBackend(object):
 
@@ -10,7 +11,7 @@ class AwsSsmBackend(object):
             raise ImportError('install configstore[awsssm] to use '
                               'the awsssm backend')
 
-
     def get_setting(self, param):
+        client = boto3.client('ssm')
         response = client.get_parameter(Name=param)
         return response['Parameter']['Value']
