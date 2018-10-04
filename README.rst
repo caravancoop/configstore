@@ -32,8 +32,13 @@ configstore.DotenvBackend lets you put settings in a key-value format file, usin
 This backend requires an optional dependency, so use a requirement like ``configstore[dotenv]``
 to get everything installed.
 
+configstore.AwsSsmBackend finds settings in AWS Systems managements. You can add an optional prefix
+to fit your specific needs. This backend requires an optional dependency, so use a requirement like ``configstore[awsssm]``
+to get everything installed.
+
 .. _docker secrets: https://docs.docker.com/engine/swarm/secrets/
 .. _dotenv module: https://github.com/jpadilla/django-dotenv
+.. _aws ssm: https://docs.aws.amazon.com/systems-manager/latest/APIReference/Welcome.html
 
 
 Contributors
