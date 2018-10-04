@@ -28,6 +28,6 @@ setup(
     extras_require={
         # This does not depend on django in any way
         'dotenv': ['django-dotenv'],
-        'awsssh': ['boto3'],
+        'awsssm': ['boto3'],
     },
 )
