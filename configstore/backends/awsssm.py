@@ -25,11 +25,9 @@ class AwsSsmBackend(object):
 
     def get_setting(self, param):
         client = boto3.client('ssm')
+        name = self.name_prefix + param
         try:
-            res = client.get_parameter(
-                Name=self.name_prefix + param,
-                WithDecryption=True
-            )
+            res = client.get_parameter(Name=name, WithDecryption=True)
         except ClientError as exc:
             if exc.response['Error']['Code'] == 'ParameterNotFound':
                 return None

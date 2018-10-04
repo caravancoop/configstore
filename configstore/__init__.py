@@ -1,7 +1,7 @@
-from .backends import DockerSecretBackend, DotenvBackend, EnvVarBackend, AwsSsmBackend
+from .backends import AwsSsmBackend, DockerSecretBackend, DotenvBackend, EnvVarBackend
 from .store import Store, SettingNotFoundException
 
 __all__ = [
     'Store', 'SettingNotFoundException',
-    'EnvVarBackend', 'DotenvBackend', 'DockerSecretBackend', 'AwsSsmBackend'
+    'EnvVarBackend', 'DotenvBackend', 'DockerSecretBackend', 'AwsSsmBackend',
 ]
