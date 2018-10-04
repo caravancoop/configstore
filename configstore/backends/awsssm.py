@@ -1,3 +1,4 @@
+from botocore.exceptions import ClientError
 try:
     import boto3
 except ImportError:
@@ -14,5 +15,12 @@ class AwsSsmBackend(object):
 
     def get_setting(self, param):
         client = boto3.client('ssm')
-        response = client.get_parameter(Name=self.name_prefix+param, WithDecryption=True)
-        return response['Parameter']['Value']
+        try:
+            res = client.get_parameter(Name=self.name_prefix+param, WithDecryption=True)
+        except ClientError as exc:
+            if exc.response['Error']['Code'] == 'ParameterNotFound':
+                return None
+            else:
+                raise
+
+        return res['Parameter']['Value']
