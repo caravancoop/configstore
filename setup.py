@@ -7,7 +7,7 @@ or secrets from a variety of storage systems to configure your app.
 
 setup(
     name='configstore',
-    version='0.3',
+    version='0.4',
     description='Retrieve settings and secrets from different stores',
     long_description=long_description,
     url='https://github.com/caravancoop/configstore',
