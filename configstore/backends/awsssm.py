@@ -1,7 +1,7 @@
 try:
     import boto3
     from botocore.exceptions import ClientError
-except ImportError:
+except ImportError:  # pragma: no cover
     boto3 = None
 
 
