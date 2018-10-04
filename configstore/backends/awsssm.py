@@ -1,6 +1,6 @@
-from botocore.exceptions import ClientError
 try:
     import boto3
+    from botocore.exceptions import ClientError
 except ImportError:
     boto3 = None
 
