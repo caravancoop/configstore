@@ -19,7 +19,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: configstore-py37-v1
+          key: configstore-py37-v2
       - run:
           name: Install CI tools
           command: |
@@ -32,7 +32,7 @@ jobs:
           name: Run tests with coverage
           command: venv/bin/tox -e coverage
       - save_cache:
-          key: configstore-py37-v1
+          key: configstore-py37-v2
           paths:
             - venv
             - .tox
@@ -46,7 +46,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: configstore-py36-v1
+          key: configstore-py36-v2
       - run:
           name: Install CI tools
           command: |
@@ -56,7 +56,7 @@ jobs:
           name: Test with Python 3.6
           command: venv/bin/tox -e py36 -- --junitxml=reports/tox/coverage.xml
       - save_cache:
-          key: configstore-py36-v1
+          key: configstore-py36-v2
           paths:
             - venv
             - .tox
@@ -70,7 +70,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: configstore-py35-v1
+          key: configstore-py35-v2
       - run:
           name: Install CI tools
           command: |
@@ -80,7 +80,7 @@ jobs:
           name: Test with Python 3.5
           command: venv/bin/tox -e py35 -- --junitxml=reports/tox/coverage.xml
       - save_cache:
-          key: configstore-py35-v1
+          key: configstore-py35-v2
           paths:
             - venv
             - .tox
@@ -94,7 +94,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: configstore-py27-v1
+          key: configstore-py27-v2
       - run:
           name: Install CI tools
           command: |
@@ -104,7 +104,7 @@ jobs:
           name: Test with Python 2.7
           command: venv/bin/tox -e py27 -- --junitxml=reports/tox/coverage.xml
       - save_cache:
-          key: configstore-py35-v1
+          key: configstore-py35-v2
           paths:
             - venv
             - .tox
@@ -118,7 +118,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: configstore-check-v1
+          key: configstore-check-v2
       - run:
           name: Install CI tools
           command: |
@@ -128,7 +128,7 @@ jobs:
           name: Check packaging and dependencies
           command: venv/bin/tox -e pkg
       - save_cache:
-          key: configstore-check-v1
+          key: configstore-check-v2
           paths:
             - venv
             - .tox

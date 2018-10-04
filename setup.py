@@ -26,7 +26,8 @@ setup(
         'configstore', 'configstore.backends',
     ],
     extras_require={
-        # This does not depend on django in any way
+        # django-dotenv does not actually use or need Django
         'dotenv': ['django-dotenv'],
+        'awsssm': ['boto3'],
     },
 )

@@ -7,6 +7,7 @@ except ImportError:  # pragma: no cover
 
 
 class DotenvBackend(object):
+    """Create an instance with a path to the .env file."""
 
     def __init__(self, dotenv_path):
         if dotenv is None:
