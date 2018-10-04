@@ -23,17 +23,18 @@ configstore.EnvVarBackend finds settings in environment variables.  This is the 
 to inspect the environment and access sensitive data.  This backend is still useful for
 settings that are not secrets.
 
-configstore.DockerSecretBackend can read `Docker secrets`_.
-This is a secure storage with first-class support in the Docker runtime and related
-tooling.
-
 configstore.DotenvBackend lets you put settings in a key-value format file, using the
 `dotenv module`_, which is useful for local development.
 This backend requires an optional dependency, so use a requirement like ``configstore[dotenv]``
 to get everything installed.
 
-configstore.AwsSsmBackend finds settings in  `AWS Systems Manager`_. You can add an optional prefix
-to fit your specific needs. This backend requires an optional dependency, so use a requirement like ``configstore[awsssm]``
+configstore.DockerSecretBackend can read `Docker secrets`_.
+This is a secure storage with first-class support in the Docker runtime and related
+tooling.
+
+configstore.AwsSsmBackend connects to the Parameter Store service that
+is part of `AWS Systems Manager`_.  This backend requires optional
+dependencies (boto3), so use a requirement like ``configstore[awsssm]``
 to get everything installed.
 
 .. _docker secrets: https://docs.docker.com/engine/swarm/secrets/

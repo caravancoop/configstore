@@ -6,11 +6,21 @@ except ImportError:  # pragma: no cover
 
 
 class AwsSsmBackend(object):
+    """Backend for AWS System Manager Parameter Store.
+
+    You can create an instance with a prefix:
+
+        AwsSsmBackend('/myapp/pre-prod/')
+
+    so that a call like store.get_setting('DEBUG') will
+    try to get a parameter named `/myapp/pre-prod/DEBUG`.
+    """
 
     def __init__(self, name_prefix=''):
         if boto3 is None:
             raise ImportError('install configstore[awsssm] to use '
-                              'the Aws Ssm Backend')
+                              'the AWS SSM backend')
+
         self.name_prefix = name_prefix
 
     def get_setting(self, param):
