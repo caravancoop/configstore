@@ -1,4 +1,4 @@
-from ..backends.env_var import EnvVarBackend
+from configstore.backends.env_var import EnvVarBackend
 
 
 def test_env_var_success(monkeypatch):
