@@ -3,7 +3,7 @@ import pytest
 
 from botocore.exceptions import ClientError
 
-from ..backends.awsssm import AwsSsmBackend
+from configstore.backends.awsssm import AwsSsmBackend
 
 
 def test_awsssm_init_bad_install(monkeypatch):

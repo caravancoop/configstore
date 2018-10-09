@@ -5,7 +5,7 @@ import errno
 import pretend
 import pytest
 
-from ..backends.docker_secret import DockerSecretBackend
+from configstore.backends.docker_secret import DockerSecretBackend
 
 
 if sys.version_info[0] == 3:
