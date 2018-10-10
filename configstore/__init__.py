@@ -8,4 +8,4 @@ __all__ = [
     'EnvVarBackend', 'DotenvBackend', 'DockerSecretBackend', 'AwsSsmBackend',
 ]
 
-__version__ = '0.5.dev'
+__version__ = '0.5'
