@@ -27,7 +27,7 @@ jobs:
             venv/bin/pip install tox
       - run:
           name: Test with Python 3.7
-          command: venv/bin/tox -e py37 -- --junitxml=reports/tox/coverage.xml
+          command: venv/bin/tox -e py37 -- --junitxml=~/reports/tox/coverage.xml
       - run:
           name: Run tests with coverage
           command: venv/bin/tox -e coverage
@@ -37,7 +37,7 @@ jobs:
             - venv
             - .tox
       - store_test_results:
-          path: reports
+          path: ~/reports
 
   test-py36:
     docker:
@@ -54,14 +54,14 @@ jobs:
             venv/bin/pip install tox
       - run:
           name: Test with Python 3.6
-          command: venv/bin/tox -e py36 -- --junitxml=reports/tox/coverage.xml
+          command: venv/bin/tox -e py36 -- --junitxml=~/reports/tox/coverage.xml
       - save_cache:
           key: configstore-py36-v2
           paths:
             - venv
             - .tox
       - store_test_results:
-          path: reports
+          path: ~/reports
 
   test-py35:
     docker:
@@ -78,18 +78,19 @@ jobs:
             venv/bin/pip install tox
       - run:
           name: Test with Python 3.5
-          command: venv/bin/tox -e py35 -- --junitxml=reports/tox/coverage.xml
+          command: venv/bin/tox -e py35 -- --junitxml=~/reports/tox/coverage.xml
       - save_cache:
           key: configstore-py35-v2
           paths:
             - venv
             - .tox
       - store_test_results:
-          path: reports
+          path: ~/reports
 
   test-py27:
     docker:
-      - image: circleci/python:2.7
+      # This image contains Python 3.6 (to install flit) and 2.7 (to run tests)
+      - image: circleci/python:3.6
     working_directory: ~/configstore
     steps:
       - checkout
@@ -98,18 +99,20 @@ jobs:
       - run:
           name: Install CI tools
           command: |
-            virtualenv -p python2.7 venv
+            python3.6 -m venv venv
             venv/bin/pip install tox
       - run:
           name: Test with Python 2.7
-          command: venv/bin/tox -e py27 -- --junitxml=reports/tox/coverage.xml
+          command: |
+            venv/bin/tox --sdistonly
+            venv/bin/tox -e py27 -- --junitxml=~/reports/tox/coverage.xml
       - save_cache:
-          key: configstore-py35-v2
+          key: configstore-py27-v2
           paths:
             - venv
             - .tox
       - store_test_results:
-          path: reports
+          path: ~/reports
 
   check:
     docker:
@@ -132,5 +135,3 @@ jobs:
           paths:
             - venv
             - .tox
-      - store_test_results:
-          path: reports
