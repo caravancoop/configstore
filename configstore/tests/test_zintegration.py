@@ -7,6 +7,8 @@ ENVIRONMENT=PRODUCTION
 export DEBUG=True
 '''
 
+DOTENV_EMPTY = u''''''
+
 
 def test_env_var_dotenv_success(monkeypatch, tmpdir):
     monkeypatch.setenv('ENVIRONMENT', 'STAGING')
@@ -57,5 +59,25 @@ def test_export_success(tmpdir):
     debug = store.get_setting('DEBUG')
 
     assert debug == 'True'
+
+    del store
+
+
+def test_dotenv_empty_file(monkeypatch, tmpdir):
+    monkeypatch.setenv('ENVIRONMENT', 'STAGING')
+    p = tmpdir.join("config.env")
+    p.write(DOTENV_EMPTY)
+
+    store = configstore.Store([
+        configstore.DotenvBackend(str(p)),
+        configstore.EnvVarBackend(),
+    ])
+
+    with pytest.raises(Exception) as excinfo:
+        store.get_setting('DEBUG')
+    environment = store.get_setting('ENVIRONMENT')
+
+    assert "Couldn't find setting" in str(excinfo.value)
+    assert environment == 'STAGING'
 
     del store
