@@ -4,7 +4,7 @@ import sys
 import pretend
 import pytest
 
-from ..backends.dotenv import DotenvBackend
+from configstore.backends.dotenv import DotenvBackend
 
 
 if sys.version_info[0] == 3:
