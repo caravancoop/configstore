@@ -1,27 +1,45 @@
 import pytest
-
 import configstore
 
 DOTENV_CONTENTS = u'''
-APP_SECRET_KEY=1234dot
-APP_ENVIRONMENT=PRODUCTION
+SECRET_KEY=1234dot
+ENVIRONMENT=PRODUCTION
 '''
 
 
 def test_env_var_dotenv_success(monkeypatch, tmpdir):
-    monkeypatch.setenv('APP_ENVIRONMENT', 'STAGING')
+    monkeypatch.setenv('ENVIRONMENT', 'STAGING')
     p = tmpdir.join("config.env")
     p.write(DOTENV_CONTENTS)
 
     store = configstore.Store([
         configstore.EnvVarBackend(),
-        configstore.DotenvBackend(p),
+        configstore.DotenvBackend(str(p)),
     ])
 
-    app_environment = store.get_setting('APP_ENVIRONMENT')
-    app_secret_key = store.get_setting('APP_SECRET_KEY')
+    environment = store.get_setting('ENVIRONMENT')
+    secret_key = store.get_setting('SECRET_KEY')
 
-    assert app_secret_key == '1234dot'
-    assert app_environment == 'STAGING'
+    assert secret_key == '1234dot'
+    assert environment == 'STAGING'
+
+    del store
+
+
+def test_dotenv_env_var_success(monkeypatch, tmpdir):
+    monkeypatch.setenv('ENVIRONMENT', 'STAGING')
+    p = tmpdir.join("config.env")
+    p.write(DOTENV_CONTENTS)
+
+    store = configstore.Store([
+        configstore.DotenvBackend(str(p)),
+        configstore.EnvVarBackend(),
+    ])
+
+    environment = store.get_setting('ENVIRONMENT')
+    secret_key = store.get_setting('SECRET_KEY')
+
+    assert secret_key == '1234dot'
+    assert environment == 'PRODUCTION'
 
     del store
