@@ -14,7 +14,7 @@ class SettingNotFoundException(Exception):
     pass
 
 
-_no_default = object()
+_no_default: str = '~~!!configstore-no-default!!~~'
 
 
 class Store(object):
@@ -25,7 +25,7 @@ class Store(object):
     def add_backend(self, backend: Backends):
         self._backends += (backend,)
 
-    def get_setting(self, key: str, default=_no_default) -> str:
+    def get_setting(self, key: str, default: str=_no_default) -> str:
         for backend in self._backends:
             ret = backend.get_setting(key)
             if ret is None:
