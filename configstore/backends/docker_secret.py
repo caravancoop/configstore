@@ -3,6 +3,8 @@ import errno
 
 from .base import Backend
 
+from typing import Optional
+
 SECRETS_PATH = '/run/secrets'
 
 
@@ -11,7 +13,7 @@ class DockerSecretBackend(Backend):
     def __init__(self, secrets_path=SECRETS_PATH):
         self.secrets_path = secrets_path
 
-    def get_setting(self, key):
+    def get_setting(self, key: str) -> Optional[str]:
         path = os.path.join(self.secrets_path, key)
 
         try:

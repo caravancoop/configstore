@@ -2,11 +2,12 @@
 __pycache__
 
 # Test artifacts
-/.mypy_cache/
 /.pytest_cache/
 /.coverage
 /.tox/
 /venv/
+/.pyre/
+.pyre_configuration
 
 # Packaging litter
 /configstore.egg-info

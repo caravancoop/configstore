@@ -1,4 +1,4 @@
-from typing import Type
+from typing import Type, Tuple
 
 from .backends import Backend
 
@@ -12,7 +12,7 @@ _no_default: str = '~~!!configstore-no-default!!~~'
 
 class Store(object):
 
-    def __init__(self, backends) -> None:
+    def __init__(self, backends: Tuple[Type[Backend]]) -> None:
         self._backends = tuple(backends)
 
     def add_backend(self, backend: Type[Backend]):

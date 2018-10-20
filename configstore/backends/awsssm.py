@@ -1,7 +1,10 @@
 from .base import Backend
+
+from typing import Optional
+
 try:
-    import boto3
-    from botocore.exceptions import ClientError
+    import boto3  # pyre-ignore
+    from botocore.exceptions import ClientError  # pyre-ignore
 except ImportError:  # pragma: no cover
     boto3 = None
 
@@ -24,9 +27,9 @@ class AwsSsmBackend(Backend):
 
         self.name_prefix = name_prefix
 
-    def get_setting(self, param):
+    def get_setting(self, key: str) -> Optional[str]:
         client = boto3.client('ssm')
-        name = self.name_prefix + param
+        name = self.name_prefix + key
         try:
             res = client.get_parameter(Name=name, WithDecryption=True)
         except ClientError as exc:
