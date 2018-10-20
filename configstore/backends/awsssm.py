@@ -1,3 +1,4 @@
+from .base import Backend
 try:
     import boto3
     from botocore.exceptions import ClientError
@@ -5,7 +6,7 @@ except ImportError:  # pragma: no cover
     boto3 = None
 
 
-class AwsSsmBackend(object):
+class AwsSsmBackend(Backend):
     """Backend for AWS System Manager Parameter Store.
 
     You can create an instance with a prefix:

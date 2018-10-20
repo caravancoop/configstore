@@ -1,13 +1,6 @@
-from typing import TypeVar
+from typing import Type
 
-from .backends.env_var import EnvVarBackend
-from .backends.dotenv import DotenvBackend
-from .backends.awsssm import AwsSsmBackend
-from .backends.docker_secret import DockerSecretBackend
-
-
-Backends = TypeVar('Backends', EnvVarBackend, DotenvBackend,
-                   AwsSsmBackend, DockerSecretBackend)
+from .backends import Backend
 
 
 class SettingNotFoundException(Exception):
@@ -22,7 +15,7 @@ class Store(object):
     def __init__(self, backends) -> None:
         self._backends = tuple(backends)
 
-    def add_backend(self, backend: Backends):
+    def add_backend(self, backend: Type[Backend]):
         self._backends += (backend,)
 
     def get_setting(self, key: str, default: str=_no_default) -> str:

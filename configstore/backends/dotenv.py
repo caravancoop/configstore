@@ -1,12 +1,14 @@
 from __future__ import absolute_import
 
+from .base import Backend
+
 try:
     import dotenv
 except ImportError:  # pragma: no cover
     dotenv = None
 
 
-class DotenvBackend(object):
+class DotenvBackend(Backend):
     """Create an instance with a path to the .env file."""
 
     def __init__(self, dotenv_path):

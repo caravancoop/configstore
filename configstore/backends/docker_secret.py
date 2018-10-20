@@ -1,10 +1,12 @@
 import os
 import errno
 
+from .base import Backend
+
 SECRETS_PATH = '/run/secrets'
 
 
-class DockerSecretBackend(object):
+class DockerSecretBackend(Backend):
 
     def __init__(self, secrets_path=SECRETS_PATH):
         self.secrets_path = secrets_path
