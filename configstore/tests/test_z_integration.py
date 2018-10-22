@@ -9,14 +9,14 @@ ENVIRONMENT=PRODUCTION
 DOTENV_EMPTY = u''''''
 
 
-def test_env_var_dotenv_success(monkeypatch, tmpdir):
+def test_env_var_dotenv_success(monkeypatch, tmp_path):
     monkeypatch.setenv('ENVIRONMENT', 'STAGING')
-    p = tmpdir.join("config.env")
-    p.write(DOTENV_CONTENTS)
+    path = tmp_path / "config.env"
+    path.write_text(DOTENV_CONTENTS)
 
     store = configstore.Store([
         configstore.EnvVarBackend(),
-        configstore.DotenvBackend(str(p)),
+        configstore.DotenvBackend(str(path)),
     ])
 
     secret_key = store.get_setting('SECRET_KEY')
@@ -26,13 +26,13 @@ def test_env_var_dotenv_success(monkeypatch, tmpdir):
     assert environment == 'STAGING'
 
 
-def test_dotenv_env_var_success(monkeypatch, tmpdir):
+def test_dotenv_env_var_success(monkeypatch, tmp_path):
     monkeypatch.setenv('ENVIRONMENT', 'STAGING')
-    p = tmpdir.join("config.env")
-    p.write(DOTENV_CONTENTS)
+    path = tmp_path / "config.env"
+    path.write_text(DOTENV_CONTENTS)
 
     store = configstore.Store([
-        configstore.DotenvBackend(str(p)),
+        configstore.DotenvBackend(str(path)),
         configstore.EnvVarBackend(),
     ])
 
@@ -43,13 +43,13 @@ def test_dotenv_env_var_success(monkeypatch, tmpdir):
     assert environment == 'PRODUCTION'
 
 
-def test_dotenv_empty_file(monkeypatch, tmpdir):
+def test_dotenv_empty_file(monkeypatch, tmp_path):
     monkeypatch.setenv('ENVIRONMENT', 'STAGING')
-    p = tmpdir.join("config.env")
-    p.write(DOTENV_EMPTY)
+    path = tmp_path / "config.env"
+    path.write_text(DOTENV_EMPTY)
 
     store = configstore.Store([
-        configstore.DotenvBackend(str(p)),
+        configstore.DotenvBackend(str(path)),
         configstore.EnvVarBackend(),
     ])
 
