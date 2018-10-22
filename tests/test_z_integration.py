@@ -6,15 +6,17 @@ SECRET_KEY=1234dot
 ENVIRONMENT=PRODUCTION
 '''
 
-DOTENV_EMPTY = u''''''
+DOTENV_EMPTY = u'''
+
+'''
 
 
-def test_env_var_dotenv_success(monkeypatch, tmp_path):
+def test_configstore_envvars_override_dotenv(monkeypatch, tmp_path):
     monkeypatch.setenv('ENVIRONMENT', 'STAGING')
-    path = tmp_path / "config.env"
+    path = tmp_path / 'config.env'
     path.write_text(DOTENV_CONTENTS)
 
-git    store = configstore.Store([
+    store = configstore.Store([
         configstore.EnvVarBackend(),
         configstore.DotenvBackend(str(path)),
     ])
@@ -26,9 +28,9 @@ git    store = configstore.Store([
     assert environment == 'STAGING'
 
 
-def test_dotenv_env_var_success(monkeypatch, tmp_path):
+def test_configstore_dotenv_overrides_envvars(monkeypatch, tmp_path):
     monkeypatch.setenv('ENVIRONMENT', 'STAGING')
-    path = tmp_path / "config.env"
+    path = tmp_path / 'config.env'
     path.write_text(DOTENV_CONTENTS)
 
     store = configstore.Store([
@@ -45,7 +47,7 @@ def test_dotenv_env_var_success(monkeypatch, tmp_path):
 
 def test_dotenv_empty_file(monkeypatch, tmp_path):
     monkeypatch.setenv('ENVIRONMENT', 'STAGING')
-    path = tmp_path / "config.env"
+    path = tmp_path / 'config.env'
     path.write_text(DOTENV_EMPTY)
 
     store = configstore.Store([
