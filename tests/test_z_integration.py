@@ -14,7 +14,7 @@ def test_env_var_dotenv_success(monkeypatch, tmp_path):
     path = tmp_path / "config.env"
     path.write_text(DOTENV_CONTENTS)
 
-    store = configstore.Store([
+git    store = configstore.Store([
         configstore.EnvVarBackend(),
         configstore.DotenvBackend(str(path)),
     ])
