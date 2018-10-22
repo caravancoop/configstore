@@ -1,6 +1,6 @@
 import pytest
 
-from .. import Store, SettingNotFoundException
+from configstore import Store, SettingNotFoundException
 
 
 class DictBackend:
