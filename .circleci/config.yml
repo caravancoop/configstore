@@ -4,8 +4,8 @@ workflows:
   version: 2
   configstore:
     jobs:
-      - test-py36
       - test-py37
+      - test-py36
       - check
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
           name: Test with Python 3.7
           command: venv/bin/tox -e py37 -- --junitxml=~/reports/tox/coverage.xml
       - run:
-          name: Run tests with coverage
+          name: Check coverage with Python 3.7
           command: venv/bin/tox -e coverage
       - save_cache:
           key: configstore-py37-v2

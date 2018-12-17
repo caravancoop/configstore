@@ -11,12 +11,14 @@ except ImportError:  # pragma: no cover
 
 
 class DotenvBackend(Backend):
-    """Create an instance with a path to the .env file."""
+    """Backend that reads settings in a .env file.
+
+    Create an instance with a path to the .env file.
+    """
 
     def __init__(self, dotenv_path):
         if dotenv is None:
-            raise ImportError('install configstore[dotenv] to use '
-                              'the dotenv backend')
+            raise ImportError('install configstore[dotenv] to use the dotenv backend')
 
         with open(dotenv_path) as file:
             content = file.read()

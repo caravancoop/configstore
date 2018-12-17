@@ -9,6 +9,10 @@ SECRETS_PATH = '/run/secrets'
 
 
 class DockerSecretBackend(Backend):
+    """Backend for docker secrets.
+
+    See the documentation for docker services for more info.
+    """
 
     def __init__(self, secrets_path=SECRETS_PATH):
         self.secrets_path = secrets_path
