@@ -18,8 +18,7 @@ class AwsSsmBackend(object):
 
     def __init__(self, name_prefix=''):
         if boto3 is None:
-            raise ImportError('install configstore[awsssm] to use '
-                              'the AWS SSM backend')
+            raise ImportError('install configstore[awsssm] to use the AWS SSM backend')
 
         self.name_prefix = name_prefix
 

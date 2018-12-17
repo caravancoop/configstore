@@ -1,11 +1,18 @@
 class SettingNotFoundException(Exception):
-    pass
+    """Error raised for settings not found in any backend and without default value."""
 
 
 _no_default = object()
 
 
 class Store(object):
+    """A collection of backends that let you retrieve settings from them.
+
+    Backends can be passed to constructor and/or added with add_backend.
+    When get_setting is called, backends are searched in addition order
+    to find the value; if no backend returns a value and the method was
+    called without a default, SettingNotFoundException is raised.
+    """
 
     def __init__(self, backends):
         self._backends = tuple(backends)
@@ -25,4 +32,5 @@ class Store(object):
             return default
         else:
             raise SettingNotFoundException(
-                "Couldn't find setting {} in any backend".format(key))
+                "Couldn't find setting {} in any backend".format(key)
+            )

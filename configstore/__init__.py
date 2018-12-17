@@ -4,8 +4,12 @@ from .backends import AwsSsmBackend, DockerSecretBackend, DotenvBackend, EnvVarB
 from .store import Store, SettingNotFoundException
 
 __all__ = [
-    'Store', 'SettingNotFoundException',
-    'EnvVarBackend', 'DotenvBackend', 'DockerSecretBackend', 'AwsSsmBackend',
+    'Store',
+    'SettingNotFoundException',
+    'EnvVarBackend',
+    'DotenvBackend',
+    'DockerSecretBackend',
+    'AwsSsmBackend',
 ]
 
 __version__ = '0.6.dev'

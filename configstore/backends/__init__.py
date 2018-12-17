@@ -4,5 +4,8 @@ from .dotenv import DotenvBackend
 from .env_var import EnvVarBackend
 
 __all__ = [
-    'EnvVarBackend', 'DotenvBackend', 'DockerSecretBackend', 'AwsSsmBackend',
+    'EnvVarBackend',
+    'DotenvBackend',
+    'DockerSecretBackend',
+    'AwsSsmBackend',
 ]
