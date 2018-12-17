@@ -6,7 +6,6 @@ workflows:
     jobs:
       - test-py37
       - test-py36
-      - test-py27
       - check
 
 jobs:
@@ -56,57 +55,6 @@ jobs:
           command: venv/bin/tox -e py36 -- --junitxml=~/reports/tox/coverage.xml
       - save_cache:
           key: configstore-py36-v2
-          paths:
-            - venv
-            - .tox
-      - store_test_results:
-          path: ~/reports
-
-  test-py35:
-    docker:
-      - image: circleci/python:3.5
-    working_directory: ~/configstore
-    steps:
-      - checkout
-      - restore_cache:
-          key: configstore-py35-v2
-      - run:
-          name: Install CI tools
-          command: |
-            python3.5 -m venv venv
-            venv/bin/pip install tox
-      - run:
-          name: Test with Python 3.5
-          command: venv/bin/tox -e py35 -- --junitxml=~/reports/tox/coverage.xml
-      - save_cache:
-          key: configstore-py35-v2
-          paths:
-            - venv
-            - .tox
-      - store_test_results:
-          path: ~/reports
-
-  test-py27:
-    docker:
-      # This image contains Python 3.6 (to install flit) and 2.7 (to run tests)
-      - image: circleci/python:3.6
-    working_directory: ~/configstore
-    steps:
-      - checkout
-      - restore_cache:
-          key: configstore-py27-v2
-      - run:
-          name: Install CI tools
-          command: |
-            python3.6 -m venv venv
-            venv/bin/pip install tox
-      - run:
-          name: Test with Python 2.7
-          command: |
-            venv/bin/tox --sdistonly
-            venv/bin/tox -e py27 -- --junitxml=~/reports/tox/coverage.xml
-      - save_cache:
-          key: configstore-py27-v2
           paths:
             - venv
             - .tox

@@ -6,6 +6,8 @@ __pycache__
 /.coverage
 /.tox/
 /venv/
+/.pyre/
+.pyre_configuration
 
 # Packaging litter
 /configstore.egg-info

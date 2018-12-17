@@ -1,8 +1,13 @@
+from typing import Type, Tuple
+
+from .backends import Backend
+
+
 class SettingNotFoundException(Exception):
     """Error raised for settings not found in any backend and without default value."""
 
 
-_no_default = object()
+_no_default: str = '~~!!configstore-no-default!!~~'
 
 
 class Store(object):
@@ -14,13 +19,13 @@ class Store(object):
     called without a default, SettingNotFoundException is raised.
     """
 
-    def __init__(self, backends):
+    def __init__(self, backends: Tuple[Type[Backend]]) -> None:
         self._backends = tuple(backends)
 
-    def add_backend(self, backend):
+    def add_backend(self, backend: Type[Backend]):
         self._backends += (backend,)
 
-    def get_setting(self, key, default=_no_default):
+    def get_setting(self, key: str, default: str = _no_default) -> str:
         for backend in self._backends:
             ret = backend.get_setting(key)
             if ret is None:

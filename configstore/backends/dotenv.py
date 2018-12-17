@@ -1,12 +1,16 @@
 from __future__ import absolute_import
 
+from .base import Backend
+
+from typing import Optional
+
 try:
-    import dotenv
+    import dotenv  # pyre-ignore
 except ImportError:  # pragma: no cover
     dotenv = None
 
 
-class DotenvBackend(object):
+class DotenvBackend(Backend):
     """Backend that reads settings in a .env file.
 
     Create an instance with a path to the .env file.
@@ -21,5 +25,5 @@ class DotenvBackend(object):
 
         self.config = dotenv.parse_dotenv(content)
 
-    def get_setting(self, key):
+    def get_setting(self, key: str) -> Optional[str]:
         return self.config.get(key)
