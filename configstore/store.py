@@ -32,4 +32,5 @@ class Store(object):
             return default
         else:
             raise SettingNotFoundException(
-                "Couldn't find setting {} in any backend".format(key))
+                "Couldn't find setting {} in any backend".format(key)
+            )
