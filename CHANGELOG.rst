@@ -6,6 +6,7 @@
 v0.6 (unreleased)
 =================
 
+Add interpolation for settings.
 
 
 v0.5
