@@ -72,7 +72,7 @@ jobs:
       - run:
           name: Install CI tools
           command: |
-            python3.7 -m venv venv
+            python3.8 -m venv venv
             venv/bin/pip install tox
       - run:
           name: Check packaging and dependencies
