@@ -17,7 +17,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: configstore-py38-v2
+          key: configstore-py38-v3
       - run:
           name: Install CI tools
           command: |
@@ -27,7 +27,7 @@ jobs:
           name: Test with Python 3.8
           command: venv/bin/tox -e py38 -- --junitxml=~/reports/tox/coverage.xml
       - save_cache:
-          key: configstore-py38-v2
+          key: configstore-py38-v3
           paths:
             - venv
             - .tox
@@ -41,7 +41,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: configstore-py37-v2
+          key: configstore-py37-v3
       - run:
           name: Install CI tools
           command: |
@@ -54,7 +54,7 @@ jobs:
           name: Check coverage with Python 3.7
           command: venv/bin/tox -e coverage
       - save_cache:
-          key: configstore-py37-v2
+          key: configstore-py37-v3
           paths:
             - venv
             - .tox
@@ -68,7 +68,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: configstore-check-v2
+          key: configstore-check-v3
       - run:
           name: Install CI tools
           command: |
@@ -78,7 +78,7 @@ jobs:
           name: Check packaging and dependencies
           command: venv/bin/tox -e pkg
       - save_cache:
-          key: configstore-check-v2
+          key: configstore-check-v3
           paths:
             - venv
             - .tox
