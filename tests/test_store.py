@@ -31,6 +31,14 @@ def test_store_get_setting():
     assert value == 'secrets!'
 
 
+def test_store_get_boolean():
+    store = Store([DictBackend(key='yes')])
+
+    value = store.get_boolean('key')
+
+    assert value is True
+
+
 def test_store_get_setting_with_default():
     store = Store([DictBackend(key='secrets!')])
 
@@ -39,11 +47,27 @@ def test_store_get_setting_with_default():
     assert value == 'secrets!'
 
 
+def test_store_get_boolean_with_default():
+    store = Store([DictBackend(key='yes')])
+
+    value = store.get_boolean('key', True)
+
+    assert value is True
+
+
 def test_store_get_setting_missing():
     store = Store([])
 
     with pytest.raises(SettingNotFoundException):
         store.get_setting('key')
+
+
+def test_store_get_boolean_missing():
+    store = Store([DictBackend()])
+
+    value = store.get_boolean('key')
+
+    assert value is False
 
 
 def test_store_get_setting_missing_with_default():
@@ -54,9 +78,25 @@ def test_store_get_setting_missing_with_default():
     assert value == 'default value'
 
 
+def test_store_get_boolean_missing_with_default():
+    store = Store([DictBackend()])
+
+    value = store.get_boolean('key', True)
+
+    assert value is True
+
+
 def test_store_add_backend():
     store = Store([])
 
     store.add_backend(DictBackend(environment='staging'))
 
     assert store.get_setting('environment') == 'staging'
+
+
+def test_store_add_boolean_value():
+    store = Store([DictBackend(key='right')])
+
+    store.add_boolean_value('right')
+
+    assert store.get_boolean('key') is True

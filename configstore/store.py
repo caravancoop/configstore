@@ -4,6 +4,8 @@ class SettingNotFoundException(Exception):
 
 _no_default = object()
 
+default_boolean_values = {'true', 't', 'yes', 'y', '1'}
+
 
 class Store(object):
     """A collection of backends that let you retrieve settings from them.
@@ -14,11 +16,17 @@ class Store(object):
     called without a default, SettingNotFoundException is raised.
     """
 
-    def __init__(self, backends):
+    def __init__(self, backends, boolean_values=default_boolean_values):
         self._backends = tuple(backends)
+        self.boolean_values = set()
+        for value in boolean_values:
+            self.add_boolean_value(value)
 
     def add_backend(self, backend):
         self._backends += (backend,)
+
+    def add_boolean_value(self, value):
+        self.boolean_values.add(str(value).lower())
 
     def get_setting(self, key, default=_no_default):
         for backend in self._backends:
@@ -34,3 +42,7 @@ class Store(object):
             raise SettingNotFoundException(
                 "Couldn't find setting {} in any backend".format(key)
             )
+
+    def get_boolean(self, key, default=False):
+        value = self.get_setting(key, str(default))
+        return value.lower() in self.boolean_values
