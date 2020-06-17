@@ -31,14 +31,6 @@ def test_store_get_setting():
     assert value == 'secrets!'
 
 
-def test_store_get_boolean():
-    store = Store([DictBackend(key='yes')])
-
-    value = store.get_boolean('key')
-
-    assert value is True
-
-
 def test_store_get_setting_with_default():
     store = Store([DictBackend(key='secrets!')])
 
@@ -47,27 +39,11 @@ def test_store_get_setting_with_default():
     assert value == 'secrets!'
 
 
-def test_store_get_boolean_with_default():
-    store = Store([DictBackend(key='yes')])
-
-    value = store.get_boolean('key', True)
-
-    assert value is True
-
-
 def test_store_get_setting_missing():
     store = Store([])
 
     with pytest.raises(SettingNotFoundException):
         store.get_setting('key')
-
-
-def test_store_get_boolean_missing():
-    store = Store([DictBackend()])
-
-    value = store.get_boolean('key')
-
-    assert value is False
 
 
 def test_store_get_setting_missing_with_default():
@@ -78,12 +54,31 @@ def test_store_get_setting_missing_with_default():
     assert value == 'default value'
 
 
-def test_store_get_boolean_missing_with_default():
-    store = Store([DictBackend()])
+def test_store_interpolate():
+    store = Store([DictBackend(environment='staging')])
 
-    value = store.get_boolean('key', True)
+    s = store.interpolate('before ${environment} after')
 
-    assert value is True
+    assert s == 'before staging after'
+
+
+def test_store_get_setting_interpolate_value():
+    store = Store([DictBackend(
+        environment='staging',
+        secret_key='42-${environment}-secrets!',
+    )])
+
+    value = store.get_setting('secret_key')
+
+    assert value == '42-staging-secrets!'
+
+
+def test_store_get_setting_interpolate_default():
+    store = Store([DictBackend(service_host='cool-db-server:6000')])
+
+    value = store.get_setting('service_url', 'https://${service_host}/db')
+
+    assert value == 'https://cool-db-server:6000/db'
 
 
 def test_store_add_backend():
@@ -92,6 +87,38 @@ def test_store_add_backend():
     store.add_backend(DictBackend(environment='staging'))
 
     assert store.get_setting('environment') == 'staging'
+
+
+def test_store_get_boolean_with_default():
+    store = Store([DictBackend(key='yes')])
+
+    value = store.get_boolean('key', True)
+
+    assert value is True
+
+
+def test_store_get_boolean():
+    store = Store([DictBackend(key='yes')])
+
+    value = store.get_boolean('key')
+
+    assert value is True
+
+
+def test_store_get_boolean_missing():
+    store = Store([DictBackend()])
+
+    value = store.get_boolean('key')
+
+    assert value is False
+
+
+def test_store_get_boolean_missing_with_default():
+    store = Store([DictBackend()])
+
+    value = store.get_boolean('key', True)
+
+    assert value is True
 
 
 def test_store_add_boolean_value():

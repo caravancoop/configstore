@@ -61,3 +61,25 @@ def test_dotenv_empty_file(monkeypatch, tmp_path):
 
     assert "Couldn't find setting" in str(excinfo.value)
     assert environment == 'STAGING'
+
+
+def test_interpolation(monkeypatch, tmp_path):
+    monkeypatch.setenv('ENVIRONMENT', 'STAGING')
+    monkeypatch.setenv('REDIS_URL', 'https://redis:4012')
+    #monkeypatch.setenv('APP_NAME', 'supertest-${ENVIRONMENT}-1')
+    path = tmp_path / 'config.env'
+    path.write_text(DOTENV_CONTENTS)
+    path.write_text('APP_NAME=supertest-${ENVIRONMENT}-1')
+
+    store = configstore.Store([
+        configstore.EnvVarBackend(),
+        configstore.DotenvBackend(str(path)),
+    ])
+
+    environment = store.get_setting('ENVIRONMENT')
+    app_name = store.get_setting('APP_NAME')
+    session_url = store.get_setting('SESSION_URL', '${REDIS_URL}/2')
+
+    assert environment == 'STAGING'
+    assert app_name == 'supertest-STAGING-1'
+    assert session_url == 'https://redis:4012/2'

@@ -4,12 +4,35 @@ workflows:
   version: 2
   configstore:
     jobs:
+      - test-py38
       - test-py37
-      - test-py36
-      - test-py27
       - check
 
 jobs:
+
+  test-py38:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/configstore
+    steps:
+      - checkout
+      - restore_cache:
+          key: configstore-py38-v3
+      - run:
+          name: Install CI tools
+          command: |
+            python3.8 -m venv venv
+            venv/bin/pip install tox
+      - run:
+          name: Test with Python 3.8
+          command: venv/bin/tox -e py38 -- --junitxml=~/reports/tox/coverage.xml
+      - save_cache:
+          key: configstore-py38-v3
+          paths:
+            - venv
+            - .tox
+      - store_test_results:
+          path: ~/reports
 
   test-py37:
     docker:
@@ -18,7 +41,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: configstore-py37-v2
+          key: configstore-py37-v3
       - run:
           name: Install CI tools
           command: |
@@ -31,82 +54,7 @@ jobs:
           name: Check coverage with Python 3.7
           command: venv/bin/tox -e coverage
       - save_cache:
-          key: configstore-py37-v2
-          paths:
-            - venv
-            - .tox
-      - store_test_results:
-          path: ~/reports
-
-  test-py36:
-    docker:
-      - image: circleci/python:3.6
-    working_directory: ~/configstore
-    steps:
-      - checkout
-      - restore_cache:
-          key: configstore-py36-v2
-      - run:
-          name: Install CI tools
-          command: |
-            python3.6 -m venv venv
-            venv/bin/pip install tox
-      - run:
-          name: Test with Python 3.6
-          command: venv/bin/tox -e py36 -- --junitxml=~/reports/tox/coverage.xml
-      - save_cache:
-          key: configstore-py36-v2
-          paths:
-            - venv
-            - .tox
-      - store_test_results:
-          path: ~/reports
-
-  test-py35:
-    docker:
-      - image: circleci/python:3.5
-    working_directory: ~/configstore
-    steps:
-      - checkout
-      - restore_cache:
-          key: configstore-py35-v2
-      - run:
-          name: Install CI tools
-          command: |
-            python3.5 -m venv venv
-            venv/bin/pip install tox
-      - run:
-          name: Test with Python 3.5
-          command: venv/bin/tox -e py35 -- --junitxml=~/reports/tox/coverage.xml
-      - save_cache:
-          key: configstore-py35-v2
-          paths:
-            - venv
-            - .tox
-      - store_test_results:
-          path: ~/reports
-
-  test-py27:
-    docker:
-      # This image contains Python 3.6 (to install flit) and 2.7 (to run tests)
-      - image: circleci/python:3.6
-    working_directory: ~/configstore
-    steps:
-      - checkout
-      - restore_cache:
-          key: configstore-py27-v2
-      - run:
-          name: Install CI tools
-          command: |
-            python3.6 -m venv venv
-            venv/bin/pip install tox
-      - run:
-          name: Test with Python 2.7
-          command: |
-            venv/bin/tox --sdistonly
-            venv/bin/tox -e py27 -- --junitxml=~/reports/tox/coverage.xml
-      - save_cache:
-          key: configstore-py27-v2
+          key: configstore-py37-v3
           paths:
             - venv
             - .tox
@@ -115,22 +63,22 @@ jobs:
 
   check:
     docker:
-      - image: circleci/python:3.7
+      - image: circleci/python:3.8
     working_directory: ~/configstore
     steps:
       - checkout
       - restore_cache:
-          key: configstore-check-v2
+          key: configstore-check-v3
       - run:
           name: Install CI tools
           command: |
-            python3.7 -m venv venv
+            python3.8 -m venv venv
             venv/bin/pip install tox
       - run:
           name: Check packaging and dependencies
           command: venv/bin/tox -e pkg
       - save_cache:
-          key: configstore-check-v2
+          key: configstore-check-v3
           paths:
             - venv
             - .tox

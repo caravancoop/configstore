@@ -1,3 +1,6 @@
+import re
+
+
 class SettingNotFoundException(Exception):
     """Error raised for settings not found in any backend and without default value."""
 
@@ -14,6 +17,14 @@ class Store(object):
     When get_setting is called, backends are searched in addition order
     to find the value; if no backend returns a value and the method was
     called without a default, SettingNotFoundException is raised.
+
+    Interpolation is supported: include a setting value in another setting
+    by surrounding the setting name with "${" and "}", example:
+
+        # base setting
+        redis_url = https://redis/
+        stats_url = ${redis_url}1
+        # => stats_url is https://redis/1
     """
 
     def __init__(self, backends, boolean_values=default_boolean_values):
@@ -34,9 +45,14 @@ class Store(object):
             if ret is None:
                 continue
 
+            if "${" in ret:
+                ret = self.interpolate(ret)
+
             return ret
 
         if default is not _no_default:
+            if "${" in default:
+                return self.interpolate(default)
             return default
         else:
             raise SettingNotFoundException(
@@ -46,3 +62,11 @@ class Store(object):
     def get_boolean(self, key, default=False):
         value = self.get_setting(key, str(default))
         return value.lower() in self.boolean_values
+
+    def interpolate(self, string):
+        res = re.sub(r"\$\{([_a-zA-Z0-9]+)\}", self._replace, string, count=1)
+        return res
+
+    def _replace(self, matchobj):
+        key = matchobj.group(1)
+        return self.get_setting(key)
