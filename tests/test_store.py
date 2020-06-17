@@ -54,6 +54,33 @@ def test_store_get_setting_missing_with_default():
     assert value == 'default value'
 
 
+def test_store_interpolate():
+    store = Store([DictBackend(environment='staging')])
+
+    s = store.interpolate('before ${environment} after')
+
+    assert s == 'before staging after'
+
+
+def test_store_get_setting_interpolate_value():
+    store = Store([DictBackend(
+        environment='staging',
+        secret_key='42-${environment}-secrets!',
+    )])
+
+    value = store.get_setting('secret_key')
+
+    assert value == '42-staging-secrets!'
+
+
+def test_store_get_setting_interpolate_default():
+    store = Store([DictBackend(service_host='cool-db-server:6000')])
+
+    value = store.get_setting('service_url', 'https://${service_host}/db')
+
+    assert value == 'https://cool-db-server:6000/db'
+
+
 def test_store_add_backend():
     store = Store([])
 
