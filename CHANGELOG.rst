@@ -3,8 +3,8 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-v0.6 (unreleased)
-=================
+v0.6
+====
 
 Add interpolation for settings.
 
