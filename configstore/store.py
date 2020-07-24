@@ -43,7 +43,7 @@ class Store(object):
             return ret
 
         if default is not _no_default:
-            if "${" in default:
+            if isinstance(default, str) and "${" in default:
                 return self.interpolate(default)
             return default
         else:
