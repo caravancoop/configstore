@@ -62,6 +62,12 @@ def test_store_interpolate():
     assert s == 'before staging after'
 
 
+def test_store_interpolate_none_default():
+    store = Store([])
+
+    assert store.get_setting('foo', None) is None
+
+
 def test_store_get_setting_interpolate_value():
     store = Store([DictBackend(
         environment='staging',
