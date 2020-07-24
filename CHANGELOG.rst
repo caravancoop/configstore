@@ -2,6 +2,11 @@
  changelog for configstore
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+v0.6.1
+======
+
+Make get_setting support None default.
+
 
 v0.6
 ====
