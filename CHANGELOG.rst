@@ -5,7 +5,7 @@
 v0.6.1
 ======
 
-Make get_setting support None default.
+Make get_setting support non-string default values.
 
 
 v0.6
