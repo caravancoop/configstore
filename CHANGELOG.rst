@@ -2,6 +2,13 @@
  changelog for configstore
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+v0.7 (unreleased)
+====
+
+Add asbool param to get_setting.
+
+
 v0.6.1
 ======
 
