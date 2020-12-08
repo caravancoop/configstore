@@ -5,6 +5,7 @@ DOTENV_CONTENTS = u'''
 SECRET_KEY=1234dot
 ENVIRONMENT=PRODUCTION
 EMAIL_DEBUG=1
+PROMO2=off
 '''
 
 DOTENV_EMPTY = u'''
@@ -95,14 +96,32 @@ def test_conversion(monkeypatch, tmp_path):
         configstore.EnvVarBackend(),
     ])
 
-    debug = store.get_setting('DEBUG', asbool=True)
-    promo = store.get_setting('PROMO', False, asbool=True)
+    # basic test
     email_as_string = store.get_setting('EMAIL_DEBUG')
     email_as_bool = store.get_setting('EMAIL_DEBUG', asbool=True)
 
-    assert debug is True
-    assert promo is False
     assert email_as_string == '1'
     assert email_as_bool is True
+
+    # setting found in store, value true
+    debug = store.get_setting('DEBUG', asbool=True)
+    # not found, default is boolean
+    promo1 = store.get_setting('PROMO1', True, asbool=True)
+    # found, value false
+    promo2 = store.get_setting('PROMO2', asbool=True)
+    # not found, default converted from string
+    promo3 = store.get_setting('PROMO3', '1', asbool=True)
+    # not found, default w/ interpolation, false
+    promo3 = store.get_setting('PROMO3', '${PROMO2}', asbool=True)
+    # not found, default w/ interpolation, true
+    extra_debug = store.get_setting('EXTRA_DEBUG', '${DEBUG}', asbool=True)
+
+    assert debug is True
+    assert promo1 is True
+    assert promo2 is False
+    assert promo3 is False
+    assert extra_debug is True
+
+    # error in conversion bubbles up
     with pytest.raises(ValueError):
         store.get_setting('ENVIRONMENT', asbool=True)
