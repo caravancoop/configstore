@@ -26,6 +26,9 @@ jobs:
       - run:
           name: Test with Python 3.8
           command: venv/bin/tox -e py38 -- --junitxml=~/reports/tox/coverage.xml
+      - run:
+          name: Check coverage with Python 3.8
+          command: venv/bin/tox -e coverage
       - save_cache:
           key: configstore-py38-v3
           paths:
@@ -50,9 +53,6 @@ jobs:
       - run:
           name: Test with Python 3.7
           command: venv/bin/tox -e py37 -- --junitxml=~/reports/tox/coverage.xml
-      - run:
-          name: Check coverage with Python 3.7
-          command: venv/bin/tox -e coverage
       - save_cache:
           key: configstore-py37-v3
           paths:

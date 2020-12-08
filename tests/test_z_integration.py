@@ -4,6 +4,8 @@ import configstore
 DOTENV_CONTENTS = u'''
 SECRET_KEY=1234dot
 ENVIRONMENT=PRODUCTION
+EMAIL_DEBUG=1
+PROMO2=off
 '''
 
 DOTENV_EMPTY = u'''
@@ -66,7 +68,6 @@ def test_dotenv_empty_file(monkeypatch, tmp_path):
 def test_interpolation(monkeypatch, tmp_path):
     monkeypatch.setenv('ENVIRONMENT', 'STAGING')
     monkeypatch.setenv('REDIS_URL', 'https://redis:4012')
-    #monkeypatch.setenv('APP_NAME', 'supertest-${ENVIRONMENT}-1')
     path = tmp_path / 'config.env'
     path.write_text(DOTENV_CONTENTS)
     path.write_text('APP_NAME=supertest-${ENVIRONMENT}-1')
@@ -83,3 +84,44 @@ def test_interpolation(monkeypatch, tmp_path):
     assert environment == 'STAGING'
     assert app_name == 'supertest-STAGING-1'
     assert session_url == 'https://redis:4012/2'
+
+
+def test_conversion(monkeypatch, tmp_path):
+    monkeypatch.setenv('DEBUG', 'on')
+    path = tmp_path / 'config.env'
+    path.write_text(DOTENV_CONTENTS)
+
+    store = configstore.Store([
+        configstore.DotenvBackend(str(path)),
+        configstore.EnvVarBackend(),
+    ])
+
+    # basic test
+    email_as_string = store.get_setting('EMAIL_DEBUG')
+    email_as_bool = store.get_setting('EMAIL_DEBUG', asbool=True)
+
+    assert email_as_string == '1'
+    assert email_as_bool is True
+
+    # setting found in store, value true
+    debug = store.get_setting('DEBUG', asbool=True)
+    # not found, default is boolean
+    promo1 = store.get_setting('PROMO1', True, asbool=True)
+    # found, value false
+    promo2 = store.get_setting('PROMO2', asbool=True)
+    # not found, default converted from string
+    promo3 = store.get_setting('PROMO3', '1', asbool=True)
+    # not found, default w/ interpolation, false
+    promo3 = store.get_setting('PROMO3', '${PROMO2}', asbool=True)
+    # not found, default w/ interpolation, true
+    extra_debug = store.get_setting('EXTRA_DEBUG', '${DEBUG}', asbool=True)
+
+    assert debug is True
+    assert promo1 is True
+    assert promo2 is False
+    assert promo3 is False
+    assert extra_debug is True
+
+    # error in conversion bubbles up
+    with pytest.raises(ValueError):
+        store.get_setting('ENVIRONMENT', asbool=True)

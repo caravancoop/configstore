@@ -1,5 +1,7 @@
 import re
 
+from . import converters
+
 
 class SettingNotFoundException(Exception):
     """Error raised for settings not found in any backend and without default value."""
@@ -23,6 +25,13 @@ class Store(object):
         redis_url = https://redis/
         stats_url = ${redis_url}1
         # => stats_url is https://redis/1
+
+    A keyword-only parameter can automatically convert string values
+    to booleans: true, on, yes, 1 / false, off, no, 0, empty string
+
+        # string setting
+        debug_email = OFF
+        # => debug_email is False
     """
 
     def __init__(self, backends):
@@ -31,25 +40,27 @@ class Store(object):
     def add_backend(self, backend):
         self._backends += (backend,)
 
-    def get_setting(self, key, default=_no_default):
+    def get_setting(self, key, default=_no_default, *, asbool=False):
+        ret = None
         for backend in self._backends:
             ret = backend.get_setting(key)
-            if ret is None:
-                continue
+            if ret is not None:
+                break
 
-            if "${" in ret:
-                ret = self.interpolate(ret)
-
-            return ret
-
-        if default is not _no_default:
-            if isinstance(default, str) and "${" in default:
-                return self.interpolate(default)
-            return default
-        else:
+        if ret is None and default is _no_default:
             raise SettingNotFoundException(
                 "Couldn't find setting {} in any backend".format(key)
             )
+        elif ret is None:
+            ret = default
+
+        if isinstance(ret, str) and "${" in ret:
+            ret = self.interpolate(ret)
+
+        if asbool:
+            ret = converters.asbool(ret)
+
+        return ret
 
     def interpolate(self, string):
         res = re.sub(r"\$\{([_a-zA-Z0-9]+)\}", self._replace, string, count=1)
