@@ -3,7 +3,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-v0.7 (unreleased)
+v0.7
 ====
 
 Add asbool param to get_setting.
