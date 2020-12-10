@@ -22,9 +22,9 @@ class AwsSsmBackend(object):
 
         self.name_prefix = name_prefix
 
-    def get_setting(self, param):
+    def get_setting(self, key):
         client = boto3.client('ssm')
-        name = self.name_prefix + param
+        name = self.name_prefix + key
         try:
             res = client.get_parameter(Name=name, WithDecryption=True)
         except ClientError as exc:

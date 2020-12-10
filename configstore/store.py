@@ -35,9 +35,19 @@ class Store(object):
     """
 
     def __init__(self, backends):
-        self._backends = tuple(backends)
+        self._backends = ()
+        for backend in backends:
+            self.add_backend(backend)
 
     def add_backend(self, backend):
+        if isinstance(backend, type):
+            raise TypeError(
+                f"backend can't be a class, did you forget parentheses? {backend!r}"
+            )
+        if not callable(getattr(backend, "get_setting", None)):
+            raise TypeError(
+                f"invalid backend {backend!r} does not have get_setting method"
+            )
         self._backends += (backend,)
 
     def get_setting(self, key, default=_no_default, *, asbool=False):
