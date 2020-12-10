@@ -6,13 +6,16 @@ from configstore import Store, SettingNotFoundException, DictBackend
 def test_store_init():
     Store([])
     Store([DictBackend({})])
-    # This error is not caught at the moment
-    Store([DictBackend])
 
     with pytest.raises(Exception):
         Store()
     with pytest.raises(Exception):
         Store(None)
+
+
+def test_store_init_invalid():
+    with pytest.raises(TypeError):
+        Store([DictBackend])
 
 
 def test_store_get_setting():
@@ -85,3 +88,15 @@ def test_store_add_backend():
     store.add_backend(DictBackend({'environment': 'staging'}))
 
     assert store.get_setting('environment') == 'staging'
+
+
+def test_store_add_backend_invalid():
+    class BadBackend:
+        def get_key(key):
+            """oops wrong name"""
+
+    store = Store([])
+    bad = BadBackend()
+
+    with pytest.raises(TypeError):
+        store.add_backend(bad)

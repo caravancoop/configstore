@@ -7,6 +7,7 @@ v0.7 (unreleased)
 ====
 
 Add asbool param to get_setting.
+Add DictBackend for tests or defaults.
 
 
 v0.6.1
