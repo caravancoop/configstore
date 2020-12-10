@@ -1,19 +1,11 @@
 import pytest
 
-from configstore import Store, SettingNotFoundException
-
-
-class DictBackend:
-    def __init__(self, **settings):
-        self._settings = settings
-
-    def get_setting(self, key):
-        return self._settings.get(key)
+from configstore import Store, SettingNotFoundException, DictBackend
 
 
 def test_store_init():
     Store([])
-    Store([DictBackend()])
+    Store([DictBackend({})])
     # This error is not caught at the moment
     Store([DictBackend])
 
@@ -24,7 +16,7 @@ def test_store_init():
 
 
 def test_store_get_setting():
-    store = Store([DictBackend(key='secrets!')])
+    store = Store([DictBackend({'key': 'secrets!'})])
 
     value = store.get_setting('key')
 
@@ -32,7 +24,7 @@ def test_store_get_setting():
 
 
 def test_store_get_setting_with_default():
-    store = Store([DictBackend(key='secrets!')])
+    store = Store([DictBackend({'key': 'secrets!'})])
 
     value = store.get_setting('key', 'default')
 
@@ -47,7 +39,7 @@ def test_store_get_setting_missing():
 
 
 def test_store_get_setting_missing_with_default():
-    store = Store([DictBackend()])
+    store = Store([DictBackend({})])
 
     value = store.get_setting('key', 'default value')
 
@@ -55,7 +47,7 @@ def test_store_get_setting_missing_with_default():
 
 
 def test_store_interpolate():
-    store = Store([DictBackend(environment='staging')])
+    store = Store([DictBackend({'environment': 'staging'})])
 
     s = store.interpolate('before ${environment} after')
 
@@ -69,10 +61,10 @@ def test_store_interpolate_none_default():
 
 
 def test_store_get_setting_interpolate_value():
-    store = Store([DictBackend(
+    store = Store([DictBackend(dict(
         environment='staging',
         secret_key='42-${environment}-secrets!',
-    )])
+    ))])
 
     value = store.get_setting('secret_key')
 
@@ -80,7 +72,7 @@ def test_store_get_setting_interpolate_value():
 
 
 def test_store_get_setting_interpolate_default():
-    store = Store([DictBackend(service_host='cool-db-server:6000')])
+    store = Store([DictBackend({'service_host': 'cool-db-server:6000'})])
 
     value = store.get_setting('service_url', 'https://${service_host}/db')
 
@@ -90,6 +82,6 @@ def test_store_get_setting_interpolate_default():
 def test_store_add_backend():
     store = Store([])
 
-    store.add_backend(DictBackend(environment='staging'))
+    store.add_backend(DictBackend({'environment': 'staging'}))
 
     assert store.get_setting('environment') == 'staging'

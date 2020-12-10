@@ -1,9 +1,14 @@
 import configstore
 
+# Create a store object with a stack of backends to look for settings
+# in environment first, then docker secrets, then a .env file
 store = configstore.Store([
-    configstore.DockerSecretBackend(),
     configstore.EnvVarBackend(),
+    configstore.DockerSecretBackend(),
 ])
+
+# Add backend to read Docket secrets
+configstore.DotenvBackend('/path/to/env/file'),
 
 # Will raise an exception if APP_SECRET_KEY isn't found in any backend
 SECRET_KEY = store.get_setting('APP_SECRET_KEY')

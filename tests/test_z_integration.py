@@ -13,7 +13,7 @@ DOTENV_EMPTY = u'''
 '''
 
 
-def test_configstore_envvars_override_dotenv(monkeypatch, tmp_path):
+def test_envvars_override_dotenv(monkeypatch, tmp_path):
     monkeypatch.setenv('ENVIRONMENT', 'STAGING')
     path = tmp_path / 'config.env'
     path.write_text(DOTENV_CONTENTS)
@@ -30,7 +30,7 @@ def test_configstore_envvars_override_dotenv(monkeypatch, tmp_path):
     assert environment == 'STAGING'
 
 
-def test_configstore_dotenv_overrides_envvars(monkeypatch, tmp_path):
+def test_dotenv_overrides_envvars(monkeypatch, tmp_path):
     monkeypatch.setenv('ENVIRONMENT', 'STAGING')
     path = tmp_path / 'config.env'
     path.write_text(DOTENV_CONTENTS)
@@ -63,6 +63,28 @@ def test_dotenv_empty_file(monkeypatch, tmp_path):
 
     assert "Couldn't find setting" in str(excinfo.value)
     assert environment == 'STAGING'
+
+
+def test_dict_defaults(monkeypatch):
+    defaults = {
+        'DEBUG': False,
+        'TIMEOUT': 100,
+    }
+    monkeypatch.setenv('TIMEOUT', '5')
+    monkeypatch.setenv('EMAIL', 'smtp://localhost')
+
+    store = configstore.Store([
+        configstore.EnvVarBackend(),
+        configstore.DictBackend(defaults),
+    ])
+
+    debug = store.get_setting('DEBUG')
+    timeout = int(store.get_setting('TIMEOUT'))
+    email = store.get_setting('EMAIL')
+
+    assert debug is False
+    assert timeout == 5
+    assert email == 'smtp://localhost'
 
 
 def test_interpolation(monkeypatch, tmp_path):

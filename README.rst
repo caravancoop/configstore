@@ -37,6 +37,9 @@ is part of `AWS Systems Manager`_.  This backend requires optional
 dependencies (boto3), so use a requirement like ``configstore[awsssm]``
 to get everything installed.
 
+Finally, configstore.DictBackend is useful to define a bunch of settings
+for testing or for defaults.
+
 .. _docker secrets: https://docs.docker.com/engine/swarm/secrets/
 .. _dotenv module: https://github.com/jpadilla/django-dotenv
 .. _aws systems manager: https://docs.aws.amazon.com/systems-manager/latest/APIReference/Welcome.html
