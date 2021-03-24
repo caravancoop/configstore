@@ -74,12 +74,34 @@ def test_store_get_setting_interpolate_value():
     assert value == '42-staging-secrets!'
 
 
+def test_store_get_setting_interpolate_missing():
+    store = Store([DictBackend({'service_host': 'cool-db-server:6000'})])
+
+    with pytest.raises(SettingNotFoundException):
+        store.get_setting('service_url')
+
+
 def test_store_get_setting_interpolate_default():
     store = Store([DictBackend({'service_host': 'cool-db-server:6000'})])
 
     value = store.get_setting('service_url', 'https://${service_host}/db')
 
     assert value == 'https://cool-db-server:6000/db'
+
+
+def test_store_get_setting_interpolate_special_character_boundary():
+    store = Store([DictBackend(dict(
+        service_url='https://${user}:${dbpass}@${host}:${port}/${db}',
+        user='bob',
+        dbpass='secret',
+        host='cool-db-server',
+        port='6000',
+        db='db1',
+    ))])
+
+    value = store.get_setting('service_url')
+
+    assert value == 'https://bob:secret@cool-db-server:6000/db1'
 
 
 def test_store_add_backend():
