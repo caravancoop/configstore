@@ -6,6 +6,8 @@
 v0.8 (unreleased)
 ====
 
+Fix interpolation of multiple variables in one setting value.
+
 
 v0.7
 ====
