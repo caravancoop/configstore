@@ -89,10 +89,15 @@ def test_dict_defaults(monkeypatch):
 
 def test_interpolation(monkeypatch, tmp_path):
     monkeypatch.setenv('ENVIRONMENT', 'STAGING')
-    monkeypatch.setenv('REDIS_URL', 'https://redis:4012')
+    monkeypatch.setenv('REDIS_HOST', 'redis')
+    monkeypatch.setenv('REDIS_PORT', '4012')
     path = tmp_path / 'config.env'
     path.write_text(DOTENV_CONTENTS)
-    path.write_text('APP_NAME=supertest-${ENVIRONMENT}-1')
+    path.write_text(
+        'APP_NAME=supertest-${ENVIRONMENT}-1\n'
+        # make sure more than one variable is possible
+        'REDIS_URL=https://${REDIS_HOST}:${REDIS_PORT}\n'
+    )
 
     store = configstore.Store([
         configstore.EnvVarBackend(),
