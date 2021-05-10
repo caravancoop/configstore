@@ -1,6 +1,6 @@
 [build-system]
-requires = ["flit"]
-build-backend = "flit.buildapi"
+requires = ["flit_core ~= 3.2.0"]
+build-backend = "flit_core.buildapi"
 
 [tool.flit.metadata]
 module = "configstore"
@@ -14,6 +14,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
     "Topic :: Software Development",
     "Topic :: System :: Installation/Setup",
     "Topic :: System :: Systems Administration",
@@ -25,3 +26,7 @@ requires = [
 # Note that django-dotenv does not actually use or need Django
 dotenv = ["django-dotenv"]
 awsssm = ["boto3"]
+
+[tool.flit.metadata.urls]
+Documentation = "https://github.com/caravancoop/configstore/blob/main/example.py"
+Changelog = "https://github.com/caravancoop/configstore/blob/main/CHANGELOG.rst"
