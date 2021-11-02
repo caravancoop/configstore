@@ -6,7 +6,7 @@ except ImportError:  # pragma: no cover
     dotenv = None
 
 
-class DotenvBackend(object):
+class DotenvBackend:
     """Backend that reads settings in a .env file.
 
     Create an instance with a path to the .env file.
