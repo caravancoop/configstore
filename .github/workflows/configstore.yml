@@ -9,16 +9,22 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - '3.9'
+          - 'coverage-3.9'
           - '3.8'
           - '3.7'
-          - 'check'
+          - 'check-3.9'
     steps:
       - uses: actions/checkout@v2.3.5
+      - name: Determine Python version
+        id: get-python-version
+        env:
+          VALUE: ${{ (contains(matrix.python-version, '3.9') && '3.9' || matrix.python-version }}
+        run: |
+          echo "::set-output name=value::$VALUE"
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2.2.2
         with:
-          python-version: ${{ (matrix.python-version == 'check') && '3.9' || matrix.python-version }}
+          python-version: ${{ steps.get-python-version.outputs.value }}
       - name: Get pip cache dir
         id: pip-cache-dir
         run: |
