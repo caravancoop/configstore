@@ -9,9 +9,11 @@ jobs:
     strategy:
       matrix:
         tox-env:
-          - coverage
-          - py38
+          - py310
           - py39
+          - py38
+          - py37
+          - coverage
           - pkg
     steps:
       - uses: actions/checkout@v2.3.5
