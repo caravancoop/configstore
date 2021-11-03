@@ -48,10 +48,6 @@ for testing or for defaults.
 Contributors
 ------------
 
-To run tests, install tox_ and run ``tox -e py39``.
-
-.. _tox: https://pypi.org/project/tox/
-
 Original author: Antoine Reversat @crevetor
 
 Current maintainer: Éric Araujo @merwok
