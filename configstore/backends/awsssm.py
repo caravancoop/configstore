@@ -5,7 +5,7 @@ except ImportError:  # pragma: no cover
     boto3 = None
 
 
-class AwsSsmBackend(object):
+class AwsSsmBackend:
     """Backend for AWS System Manager Parameter Store.
 
     You can create an instance with a prefix:

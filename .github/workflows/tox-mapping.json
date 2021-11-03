@@ -1,0 +1,10 @@
+{
+  "// comment": "map toxenv to python-version for actions/setup-python",
+  "py310": "3.10",
+  "py39": "3.9",
+  "py38": "3.8",
+  "py37": "3.7",
+  "// note":  "use current mainstream py3 version below",
+  "coverage": "3.9",
+  "pkg": "3.9"
+}

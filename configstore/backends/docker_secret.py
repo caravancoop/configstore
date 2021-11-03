@@ -4,7 +4,7 @@ import errno
 SECRETS_PATH = '/run/secrets'
 
 
-class DockerSecretBackend(object):
+class DockerSecretBackend:
     """Backend for docker secrets.
 
     See the documentation for docker services for more info.

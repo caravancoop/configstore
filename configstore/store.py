@@ -10,7 +10,7 @@ class SettingNotFoundException(Exception):
 _no_default = object()
 
 
-class Store(object):
+class Store:
     """A collection of backends that let you retrieve settings from them.
 
     Backends can be passed to constructor and/or added with add_backend.
