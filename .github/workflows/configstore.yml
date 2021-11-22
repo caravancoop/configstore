@@ -23,7 +23,7 @@ jobs:
           echo ::set-output name=value::\
           $(jq -r '.["${{ matrix.tox-env }}"]' < .github/workflows/tox-mapping.json)
       - name: Set up Python ${{ steps.get-python-version.outputs.value }}
-        uses: actions/setup-python@v2.2.2
+        uses: actions/setup-python@v2.3.0
         with:
           python-version: ${{ steps.get-python-version.outputs.value }}
       - name: Get pip cache dir
