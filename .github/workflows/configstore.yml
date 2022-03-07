@@ -16,7 +16,7 @@ jobs:
           - coverage
           - pkg
     steps:
-      - uses: actions/checkout@v2.3.5
+      - uses: actions/checkout@v3
       - name: Determine Python version
         id: get-python-version
         run: |
