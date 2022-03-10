@@ -29,22 +29,18 @@ jobs:
         include: ${{fromJson(needs.prepare.outputs.matrix)}}
 
     steps:
-      - uses: actions/checkout@v2.3.5
+      - uses: actions/checkout@v3.0.0
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.2.2
+        uses: actions/setup-python@v3.0.0
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Get pip cache dir
-        id: pip-cache-dir
-        run: |
-          echo "::set-output name=dir::$(pip cache dir)"
-      - uses: actions/cache@v2
+          cache: pip
+      - uses: actions/cache@v2.1.7
         with:
           path: |
-            ${{ steps.pip-cache-dir.outputs.dir }}
             .tox
-          key: configstore-${{ matrix.tox-env }}-v1-${{ hashFiles('pyproject.toml') }}
-          restore-keys: configstore-${{ matrix.tox-env }}-v1-
+          key: configstore-${{ matrix.tox-env }}-v2-${{ hashFiles('pyproject.toml') }}
+          restore-keys: configstore-${{ matrix.tox-env }}-v2-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -59,7 +55,7 @@ jobs:
       - test
     steps:
       - name: Send Slack notification
-        uses: Gamesight/slack-workflow-status@master
+        uses: Gamesight/slack-workflow-status@v1.0.1
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
