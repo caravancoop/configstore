@@ -4,28 +4,36 @@ on:
   workflow_dispatch:
 
 jobs:
+
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create matrix
+        uses: fabiocaccamo/create-matrix-action@v2
+        id: make_matrix
+        with:
+          matrix: |
+            python-version {3.10}, tox-env {py310,coverage,pkg}
+            python-version {3.9}, tox-env {py39}
+            python-version {3.8}, tox-env {py38}
+            python-version {3.7}, tox-env {py37}
+    outputs:
+      matrix: ${{ steps.make_matrix.outputs.matrix }}
+
   test:
     runs-on: ubuntu-latest
+    needs: prepare
     strategy:
+      fail-fast: false
       matrix:
-        tox-env:
-          - py310
-          - py39
-          - py38
-          - py37
-          - coverage
-          - pkg
+        include: ${{fromJson(needs.prepare.outputs.matrix)}}
+
     steps:
       - uses: actions/checkout@v2.3.5
-      - name: Determine Python version
-        id: get-python-version
-        run: |
-          echo ::set-output name=value::\
-          $(jq -r '.["${{ matrix.tox-env }}"]' < .github/workflows/tox-mapping.json)
-      - name: Set up Python ${{ steps.get-python-version.outputs.value }}
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2.2.2
         with:
-          python-version: ${{ steps.get-python-version.outputs.value }}
+          python-version: ${{ matrix.python-version }}
       - name: Get pip cache dir
         id: pip-cache-dir
         run: |
