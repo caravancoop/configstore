@@ -37,7 +37,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
           cache-dependency-path: 'pyproject.toml'
-      - uses: actions/cache@v2.1.7
+      - uses: actions/cache@v3.0.2
         with:
           path: |
             .tox
