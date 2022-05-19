@@ -3,7 +3,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-v0.8 (unreleased)
+v0.8
 ====
 
 Test with Python 3.9 and Python 3.10.
