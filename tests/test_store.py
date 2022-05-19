@@ -75,11 +75,11 @@ def test_store_get_setting_interpolate_value():
 
 
 def test_store_get_setting_interpolate_default():
-    store = Store([DictBackend({'service_host': 'cool-db-server:6000'})])
+    store = Store([DictBackend({'service_host': 'cool-db-server:6000', 'db': '42'})])
 
-    value = store.get_setting('service_url', 'https://${service_host}/db')
+    value = store.get_setting('service_url', 'https://${service_host}/${db}')
 
-    assert value == 'https://cool-db-server:6000/db'
+    assert value == 'https://cool-db-server:6000/42'
 
 
 def test_store_add_backend():
