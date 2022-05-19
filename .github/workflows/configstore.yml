@@ -30,14 +30,14 @@ jobs:
         include: ${{fromJson(needs.prepare.outputs.matrix)}}
 
     steps:
-      - uses: actions/checkout@v3.0.0
+      - uses: actions/checkout@v3.0.2
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3.0.0
+        uses: actions/setup-python@v3.1.2
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
           cache-dependency-path: 'pyproject.toml'
-      - uses: actions/cache@v2.1.7
+      - uses: actions/cache@v3.0.2
         with:
           path: |
             .tox
