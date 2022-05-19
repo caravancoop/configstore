@@ -73,7 +73,7 @@ class Store:
         return ret
 
     def interpolate(self, string):
-        res = re.sub(r"\$\{([_a-zA-Z0-9]+)\}", self._replace, string, count=1)
+        res = re.sub(r"\$\{([_a-zA-Z0-9]+)\}", self._replace, string)
         return res
 
     def _replace(self, matchobj):

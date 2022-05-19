@@ -7,6 +7,7 @@ v0.8 (unreleased)
 ====
 
 Test with Python 3.9 and Python 3.10.
+Support interpolation with more than one variable.
 
 
 v0.7
