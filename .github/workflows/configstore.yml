@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create matrix
-        uses: fabiocaccamo/create-matrix-action@v2
+        uses: fabiocaccamo/create-matrix-action@v3
         id: make_matrix
         with:
           matrix: |
