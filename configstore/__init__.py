@@ -1,7 +1,8 @@
 """Retrieve settings and secrets from different storages."""
 
 from .backends import (
-    AwsSsmBackend, DictBackend, DockerSecretBackend, DotenvBackend, EnvVarBackend,
+    AwsSsmBackend, DictBackend, DockerSecretBackend, DotenvBackend,
+    EnvVarBackend, GoogleSecretManagerBackend, GoogleRuntimeConfiguratorBackend
 )
 from .store import Store, SettingNotFoundException
 
@@ -13,6 +14,8 @@ __all__ = [
     'DotenvBackend',
     'DockerSecretBackend',
     'AwsSsmBackend',
+    'GoogleSecretManagerBackend',
+    'GoogleRuntimeConfiguratorBackend'
 ]
 
 __version__ = '0.9.dev'

@@ -3,6 +3,8 @@ import configstore
 # Create a store object with a stack of backends to look for settings
 # in environment first, then docker secrets, then a .env file
 store = configstore.Store([
+    configstore.GoogleSecretManagerBackend("my-test-project", True),
+    configstore.GoogleRuntimeConfiguratorBackend("my-test-project", "general", True),
     configstore.EnvVarBackend(),
     configstore.DockerSecretBackend(),
 ])

@@ -27,6 +27,8 @@ requires = [
 # Note that django-dotenv does not actually use or need Django
 dotenv = ["django-dotenv"]
 awsssm = ["boto3"]
+google_runtime_configurator = ["google-cloud-runtimeconfig"]
+google_secret_manager = ["google-cloud-secret-manager"]
 
 [tool.flit.metadata.urls]
 Documentation = "https://github.com/caravancoop/configstore/blob/main/example.py"
