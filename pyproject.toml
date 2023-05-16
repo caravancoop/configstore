@@ -18,6 +18,7 @@ classifiers = [
     "Topic :: System :: Installation/Setup",
     "Topic :: System :: Systems Administration",
 ]
+requires-python = ">= 3"
 dependencies = [
 ]
 
