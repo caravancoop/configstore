@@ -2,6 +2,9 @@
  changelog for configstore
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+v0.10 (unreleased)
+=====
+
 
 v0.9
 ====
