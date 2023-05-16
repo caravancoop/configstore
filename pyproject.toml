@@ -25,6 +25,8 @@ dependencies = [
 [project.optional-dependencies]
 # Note that django-dotenv does not actually use or need Django
 dotenv = ["django-dotenv"]
+# Alternate dotenv module, used by docker-compose
+pydotenv = ["python-dotenv"]
 awsssm = ["boto3"]
 
 [project.urls]
