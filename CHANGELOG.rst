@@ -7,6 +7,8 @@ v0.9 (unreleased)
 ====
 
 Test with Python 3.10 and 3.11.
+Add support for python-dotenv in DotenvBackend for compat
+with docker-compose.
 
 
 v0.8

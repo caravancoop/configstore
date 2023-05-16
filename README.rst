@@ -28,6 +28,10 @@ configstore.DotenvBackend lets you put settings in a key-value format file, usin
 This backend requires an optional dependency, so use a requirement like ``configstore[dotenv]``
 to get everything installed.
 
+If you are using docker-compose, `another dotenv module`_ is already installed and
+does not provide the same interface; use a requirement like `configstore[pydotenv]`
+instead.  DotenvBackend is automatically compatible.
+
 configstore.DockerSecretBackend can read `Docker secrets`_.
 This is a secure storage with first-class support in the Docker runtime and related
 tooling.
@@ -41,7 +45,8 @@ Finally, configstore.DictBackend is useful to define a bunch of settings
 for testing or for defaults.
 
 .. _docker secrets: https://docs.docker.com/engine/swarm/secrets/
-.. _dotenv module: https://github.com/jpadilla/django-dotenv
+.. _dotenv module: https://pypi.org/project/django-dotenv/
+.. _another dotenv module: https://pypi.org/project/python-dotenv/
 .. _aws systems manager: https://docs.aws.amazon.com/systems-manager/latest/APIReference/Welcome.html
 
 
