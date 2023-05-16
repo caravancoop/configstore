@@ -6,6 +6,8 @@
 v0.9 (unreleased)
 ====
 
+Test with Python 3.10 and 3.11.
+
 
 v0.8
 ====

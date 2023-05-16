@@ -2,32 +2,32 @@
 requires = ["flit_core ~= 3.4.0"]
 build-backend = "flit_core.buildapi"
 
-[tool.flit.metadata]
-module = "configstore"
-author = "Caravan Coop"
-author-email = "hi@caravan.coop"
-home-page = "https://github.com/caravancoop/configstore"
+[project]
+dynamic = ["version", "description"]
+name = "configstore"
+authors = [ { name = "Caravan Coop", email = "hi@caravan.coop" } ]
+readme = "README.rst"
 description-file = "README.rst"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Topic :: Software Development",
     "Topic :: System :: Installation/Setup",
     "Topic :: System :: Systems Administration",
 ]
-requires = [
+requires-python = ">= 3"
+dependencies = [
 ]
 
-[tool.flit.metadata.requires-extra]
+[project.optional-dependencies]
 # Note that django-dotenv does not actually use or need Django
 dotenv = ["django-dotenv"]
 awsssm = ["boto3"]
 
-[tool.flit.metadata.urls]
-Documentation = "https://github.com/caravancoop/configstore/blob/main/example.py"
+[project.urls]
+Homepage = "https://github.com/caravancoop/configstore"
 Changelog = "https://github.com/caravancoop/configstore/blob/main/CHANGELOG.rst"
+Documentation = "https://github.com/caravancoop/configstore/blob/main/example.py"
