@@ -29,7 +29,7 @@ This backend requires an optional dependency, so use a requirement like ``config
 to get everything installed.
 
 If you are using docker-compose, `another dotenv module`_ is already installed and
-does not provide the same interface; use a requirement like `configstore[pydotenv]`
+does not provide the same interface; use a requirement like ``configstore[pydotenv]``
 instead.  DotenvBackend is automatically compatible.
 
 configstore.DockerSecretBackend can read `Docker secrets`_.
